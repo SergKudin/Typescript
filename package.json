@@ -2,11 +2,15 @@
   "name": "typescript",
   "version": "1.0.0",
   "description": "",
-  "main": "src/index.js",
+  "main": "src/2-2/index.js",
   "scripts": {
     "build": "rd /s /q dist && tsc",
-    "start": "node dist/index.js"
+    "start": "node dist/2-2/index.js"
   },
   "author": "Sergii Kudin",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "ipify": "^6.0.0",
+    "node-fetch": "^3.3.0"
+  }
 }

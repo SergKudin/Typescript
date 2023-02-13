@@ -91,7 +91,7 @@ function stringEntries(a: []) {
 // you don't know Promises and async/await yet. Or do you? 
 // ....can be hard, don't worry and SKIP if you do not know how to do it
 
-async function world(a) {
+async function world(a: number) {
   return "*".repeat(a)
 }
 const hello = async () => {
