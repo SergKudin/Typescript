@@ -1,59 +1,41 @@
-"use strict";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-// task 1
-let url = 'https://api.ipify.org?format=json';
-function getResponse(url) {
-    return __awaiter(this, void 0, void 0, function* () {
-        const response = yield fetch(url);
-        if (response.ok) {
-            return response.json();
-        }
-        else {
-            throw new Error(`Error recuest. status response ${response.status}`);
-        }
-    });
+import fetch from "node-fetch";
+const url = 'https://api.ipify.org?format=json';
+async function getResponse(url) {
+    const response = await fetch(url);
+    if (response.ok) {
+        return response.json();
+    }
+    else {
+        throw new Error(`Error recuest. status response ${response.status}`);
+    }
 }
 getResponse(url)
     .then(function (ip) { console.log('task1'); console.log(ip); })
-    .catch(function (err) { console.log('task1'); console.log(err); });
-// task 2
+    .catch(function (err) { console.error('task1'); console.error(err); });
 getResponse(url)
     .then(function (response) { console.log('task2'); console.log(response.ip); })
-    .catch(function (err) { console.log('task2'); console.log(err); });
-// task 3.1
+    .catch(function (err) { console.error('task2'); console.error(err); });
 const URL_TASK3 = 'https://random-data-api.com/api/name/random_name';
-const urls = new Array(URL_TASK3, URL_TASK3, URL_TASK3);
+const urls = [URL_TASK3, URL_TASK3, URL_TASK3];
 Promise.all(urls.map(url => fetch(url)))
     .then(responses => Promise.all(responses.map(r => r.json())))
-    .then(function (r) { console.log('task3.1'); r.forEach(r => console.log(r.name)); })
-    .catch(function (err) { console.log('task3.1'); console.log(err); });
-// task 3.2
+    .then(function (r) { console.log('task3.2'); r.forEach((r) => console.log(r.name)); })
+    .catch(function (err) { console.error('task3.1'); console.error(err); });
 promiseAll(urls.map(url => fetch(url)))
     .then(responses => promiseAll(responses.map((r) => r.json())))
     .then(function (r) { console.log('task3.2'); r.forEach((r) => console.log(r.name)); })
-    .catch(function (err) { console.log('task3.2'); console.log(err); });
-function promiseAll(promises) {
-    return __awaiter(this, void 0, void 0, function* () {
-        const response = [];
-        for (let promise of promises) {
-            response.push(yield promise);
-        }
-        return response;
-    });
+    .catch(function (err) { console.error('task3.2'); console.error(err); });
+async function promiseAll(promises) {
+    const response = [];
+    for (const promise of promises) {
+        response.push(await promise);
+    }
+    return response;
 }
-// task 3.3
 promiseAll3(urls.map(url => fetch(url)))
-    .then(responses => promiseAll(responses.map((r) => r.json())))
+    .then(responses => promiseAll3(responses.map((r) => r.json())))
     .then(function (r) { console.log('task3.3'); r.forEach((r) => console.log(r.name)); })
-    .catch(function (err) { console.log('task3.3'); console.log(err); });
+    .catch(function (err) { console.error('task3.3'); console.error(err); });
 function promiseAll3(promises) {
     return new Promise((resolve, reject) => {
         const results = [];
@@ -71,3 +53,45 @@ function promiseAll3(promises) {
         });
     });
 }
+const URL_TASK4 = 'https://random-data-api.com/api/users/random_user';
+function loadJson(url) {
+    return fetch(url)
+        .then((response) => response.json());
+}
+function checkGender(user) {
+    return user.gender === 'Female';
+}
+function checkEndOutUserDate(n) {
+    return loadJson(URL_TASK4)
+        .then((user) => {
+        console.log(`task 4.1 n = ${n}, \tuser name = ${user.first_name}, \tgender = ${user.gender}, \tgenderFamale = ${checkGender(user)}`);
+        if (!checkGender(user)) {
+            checkEndOutUserDate(++n);
+        }
+    })
+        .catch((err) => console.error(err));
+}
+checkEndOutUserDate(1);
+async function loadJson2(url) {
+    const response = await fetch(url);
+    return await response.json();
+}
+async function checkEndOutUserDate2(n) {
+    try {
+        const user = await loadJson2(URL_TASK4);
+        console.log(`task 4.2 n = ${n}, \tuser name = ${user.first_name}, \tgender = ${user.gender}, \tgenderFamale = ${checkGender(user)}`);
+        if (!checkGender(user)) {
+            checkEndOutUserDate2(++n);
+        }
+    }
+    catch (err) {
+        return console.error(err);
+    }
+}
+checkEndOutUserDate2(1);
+const currentIP = '188.130.177.112';
+function callBack() {
+}
+function f1() {
+}
+//# sourceMappingURL=index.js.map

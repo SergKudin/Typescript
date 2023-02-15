@@ -1,12 +1,12 @@
 // 1. 
 
-function getFirstWord(a: String) {
+function getFirstWord(a: string) {
   return a.split(/ +/)[0].length;
 }
 
 // 2. 
 
-function getUserNamings(a: { name: String, surname: String }) {
+function getUserNamings(a: { name: string, surname: string }) {
   return {
     fullname: a.name + " " + a.surname,
     initials: a.name[0] + "." + a.surname[0]
@@ -16,7 +16,7 @@ function getUserNamings(a: { name: String, surname: String }) {
 // 3. 
 
 // <https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Optional_chaining>
-function getAllProductNames(a?: { products?: { name: String }[] }) {
+function getAllProductNames(a?: { products?: { name: string }[] }) {
   return a?.products?.map(prod => prod?.name) || [];
 }
 
@@ -25,10 +25,10 @@ function getAllProductNames(a?: { products?: { name: String }[] }) {
 // easy way is using 'as' keyword
 // hard way is ?...
 
-type animal1 = { name: () => String, coolness: number };
-type animal2 = { name: () => String, cuteness: number };
+type animal1 = { name: () => string, coolness: number };
+type animal2 = { name: () => string, cuteness: number };
 
-function hey1(a: animal1 | animal2): String {
+function hey1(a: animal1 | animal2): string {
   return "hey! i'm " + a.name();
 }
 hey1({ name: () => "roma", cuteness: 100 })
@@ -36,26 +36,26 @@ hey1({ name: () => "vasya", coolness: 100 })
 
 // 4.2
 class Animal {
-  n: String = '';
+  n = '';
   b: boolean | number;
-  constructor(name: String, b: boolean | number) {
+  constructor(name: string, b: boolean | number) {
     this.n = name;
     this.b = b;
   }
-  name(): String {
+  name(): string {
     return this.n;
   }
 }
 
 class Cat extends Animal {
-  b: boolean = false;
-  constructor(name: String, b: boolean) {
+  b = false;
+  constructor(name: string, b: boolean) {
     super(name, b);
   }
 }
 class Dog extends Animal {
-  b: number = 0;
-  constructor(name: String, b: number) {
+  b = 0;
+  constructor(name: string, b: number) {
     super(name, b);
   }
 }
@@ -63,14 +63,14 @@ class Dog extends Animal {
 function hey2(abstractPet: Animal) {
   return "hey! i'm " + abstractPet.name();
 }
-let a = new Cat("myavchik", true)
-let b = new Dog("gavchik", 333)
+const a = new Cat("myavchik", true)
+const b = new Dog("gavchik", 333)
 hey2(a)
 hey2(b)
 
 // 4.3
-type cat = { name: () => String, type: String, cuteness: number, coolness?: number };
-type dog = { name: () => String, type: String, coolness: number, cuteness?: number };
+type cat = { name: () => string, type: string, cuteness: number, coolness?: number };
+type dog = { name: () => string, type: string, coolness: number, cuteness?: number };
 
 function hey(a: cat | dog) {
   return "hey! i'm " + a.name()
