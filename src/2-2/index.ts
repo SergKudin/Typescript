@@ -134,7 +134,7 @@ async function f1(callBack: any) {
 }
 
 let result = async function () {
-  console.log('task5 Start f2')
+  console.log('task5 Start f2');
   return f1(callBack);
 }
 
@@ -153,4 +153,4 @@ async function task6F2(url: string, f1: any, callBack: any) {
   callBack('Task 6', currIP);
 }
 
-task6F2(url, task6F1, callBack) 
+task6F2(url, task6F1, callBack); 
