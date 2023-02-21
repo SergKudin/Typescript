@@ -90,8 +90,32 @@ async function checkEndOutUserDate2(n) {
 }
 checkEndOutUserDate2(1);
 const currentIP = '188.130.177.112';
-function callBack() {
+function callBack(task, param) {
+    console.log(task, 'Message func callback:');
+    console.log(`you current IP = ${param}`);
+    return param;
 }
-function f1() {
+async function f1(callBack) {
+    console.log('Task5.\nRun f1...');
+    setTimeout(function () {
+        console.log('...stop timer f1');
+    }, 1000);
+    return callBack('Task 5', currentIP);
 }
+let result = async function () {
+    console.log('task5 Start f2');
+    return f1(callBack);
+};
+console.log(`check task5: ${await result()}`);
+async function task6F1(url) {
+    let response = await fetch(url);
+    let obj = await response.json();
+    return await obj.ip;
+}
+async function task6F2(url, f1, callBack) {
+    let currIP = await f1(url);
+    console.log(`task6 f2. Current IP = ${currIP}`);
+    callBack('Task 6', currIP);
+}
+task6F2(url, task6F1, callBack);
 //# sourceMappingURL=index.js.map
