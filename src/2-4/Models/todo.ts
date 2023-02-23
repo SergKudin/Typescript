@@ -1,4 +1,3 @@
-// import mongoose, { Schema, model } from "mongoose";
 import { ObjectId } from "mongodb";
 
 export default class Todo {

@@ -1,7 +1,6 @@
 // External Dependencies
 import * as mongoDB from "mongodb";
 import * as dotenv from "dotenv";
-// import { env } from 'process';
 
 // Global Variables
 export const collections: { todo?: mongoDB.Collection } = {}
