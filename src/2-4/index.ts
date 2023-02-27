@@ -1,6 +1,6 @@
 import express from "express";
 import { connectToDatabase } from "./services/database.service.js"
-import { staticHTML } from "./routes/routes.js";
+import { routes } from "./routes/routes.js";
 import cors from 'cors';
 import path from "path";
 
@@ -11,7 +11,7 @@ const PORT = process.env.PORT ?? 3005;
 
 connectToDatabase()
   .then(() => {
-    app.use(staticHTML);
+    app.use(routes);
 
     app.listen(PORT, () => {
       console.log(`Server started at http://localhost:${PORT}`);
