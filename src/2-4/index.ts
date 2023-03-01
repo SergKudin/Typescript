@@ -1,13 +1,35 @@
 import express from "express";
+import { ObjectId } from "mongodb";
 import { connectToDatabase } from "./services/database.service.js"
 import { routes } from "./routes/routes.js";
 import cors from 'cors';
-import path from "path";
+import morgan from 'morgan';
+import session from 'express-session';
+import sessionFileStore from 'session-file-store'
 
+declare module "express-session" {
+  export interface Session {
+    userID?: string;
+  }
+}
+
+const FileStore = sessionFileStore(session);
+const fileStoreOptions = {};
+
+const PORT = process.env.PORT ?? 3005;
 const app = express();
+
 app.use(cors());
 app.options('*', cors());
-const PORT = process.env.PORT ?? 3005;
+app.use(morgan('dev'))
+app.use(session({
+  store: new FileStore(fileStoreOptions),
+  secret: process.env.SESSION_SECRET || 'Y{MTNjiSQ;KdnvaeoircOIHJOji:sw`a!JpAi|c',
+  // https://stackoverflow.com/questions/40381401/when-to-use-saveuninitialized-and-resave-in-express-session
+  resave: true,
+  saveUninitialized: true,
+  cookie: { maxAge: 1000 * 60 * 60 * 2 },  // ms*s*m*h
+}));
 
 connectToDatabase()
   .then(() => {
