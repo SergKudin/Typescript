@@ -1,6 +1,6 @@
 // External Dependencies
 import express, { Request, Response } from "express";
-import { getAllItems, postItems, putItems, delItems } from "../Controller/v1.items.js"
+import { getAllItems, postItems, putItems, delItems } from "../Controller/items.js"
 
 // Global Config
 export const todosRouter = express.Router();

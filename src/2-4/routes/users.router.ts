@@ -2,7 +2,7 @@
 // External Dependencies
 import express, { Request, Response } from "express";
 import { todosRouter } from "./todo.router.js";
-import { login, logout, register } from "../Controller/v1.autorisation.js"
+import { login, logout, register } from "../Controller/autorisation.js"
 
 // Global Config
 export const v1UsersRouter = express.Router();
