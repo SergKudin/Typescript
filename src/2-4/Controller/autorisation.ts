@@ -1,16 +1,14 @@
 // External Dependencies
 import express, { Request, Response } from "express";
 import bcrypt from "bcryptjs";
-import { collections } from "../services/database.service.js";
+import { findOneUser, insertOneUser } from "../services/data.service.js";
 
 // Global Config
 export const login = async function (req: Request, res: Response) {
   try {
     // { "login": "...", "pass": "..." }
     const { login, pass } = req.body;
-    let collUser = collections.user;
-    if (collUser === undefined) { throw new Error('no connect DB'); }
-    const chekUser = await collUser.findOne({ autUser: login });
+    const chekUser = await findOneUser(login);
     if (chekUser) {
       const passCompareResult = bcrypt.compareSync(pass, chekUser.autPass);
       if (passCompareResult) {
@@ -40,12 +38,11 @@ export const logout = async function (req: Request, res: Response) {
 export const register = async function (req: Request, res: Response) {
   try {
     const { login, pass } = req.body;
-    let collUser = collections.user;
-    if (collUser === undefined) { throw new Error('no connect DB'); }
-    const chekUser = await collUser.findOne({ autUser: login });
+    const chekUser = await findOneUser(login);
+
     if (!chekUser) {
       const salt = bcrypt.genSaltSync(10);
-      const result = await collUser.insertOne({ autUser: login, autPass: bcrypt.hashSync(pass, salt) });
+      const result = await insertOneUser(login, bcrypt.hashSync(pass, salt));
       res.status(201).send(JSON.stringify({ ok: true }))
     } else {
       res.status(409).send(JSON.stringify({ error: 'Error. User exists' }))

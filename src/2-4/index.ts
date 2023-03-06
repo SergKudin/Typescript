@@ -14,7 +14,7 @@ declare module "express-session" {
 }
 
 const FileStore = sessionFileStore(session);
-const fileStoreOptions = {};
+const fileStoreOptions = { path: "../sessions" };
 
 const PORT = process.env.PORT ?? 3005;
 const app = express();
@@ -25,8 +25,7 @@ app.use(morgan('dev'))
 app.use(session({
   store: new FileStore(fileStoreOptions),
   secret: process.env.SESSION_SECRET || 'Y{MTNjiSQ;KdnvaeoircOIHJOji:sw`a!JpAi|c',
-  // https://stackoverflow.com/questions/40381401/when-to-use-saveuninitialized-and-resave-in-express-session
-  resave: true,
+  resave: true,                          // https://stackoverflow.com/questions/40381401/when-to-use-saveuninitialized-and-resave-in-express-session
   saveUninitialized: true,
   cookie: { maxAge: 1000 * 60 * 60 * 2 },  // ms*s*m*h
 }));

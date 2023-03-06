@@ -3,11 +3,13 @@ import { getAllItems, postItems, putItems, delItems } from "../Controller/items.
 
 export const v2RoutsMap = new Map([
   ['login', login],
-  ['logout', logout],
+  ['logout', logout], //undefined
+  ['undefined', logout], //undefined
   ['register', register],
   ['getItems', getAllItems],
   ['deleteItem', delItems],
   ['addItem', postItems],
+  ['createItem', postItems],
   ['editItem', putItems],
 ])
 

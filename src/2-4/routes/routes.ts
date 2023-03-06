@@ -16,9 +16,6 @@ routes.use(express.json());
 
 routes.use("/api/v1", v1UsersRouter);
 routes.route("/api/v2/router").post((req: Request, res: Response) => {
-  console.log(`${req.query.action}`);
-  // console.log(`${v2RoutsMap.get(`${req.query.action}`)}`);
-
 
   const func = v2RoutsMap.get(`${req.query.action}`);
   if (func) {

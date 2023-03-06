@@ -9,3 +9,11 @@ export default class Todo {
     public _id?: ObjectId,
   ) { }
 }
+
+export class dataTodo {
+  constructor(
+    public user: string,
+    public todos: Todo[]
+  ) { }
+}
+
