@@ -1,9 +1,19 @@
-import { ObjectId } from "mongodb";
 import Todo from "../Models/todo.js";
-import { collections } from "../services/database.service.js";
+import { connectToDatabase, deleteOneTodoDB, findOneTodoDB, findOneUserDB, getAllTodosDB, insertOneTodoDB, insertOneUserDB, updateOneTodoDB } from "../services/database.service.js";
 import dataFile from "./file.service.js";
 import dbInMemory from "./memory.service.js";
 
+export async function preparedStart() {
+  if (process.env.SAVE_DATA_IN_DB === 'true') {
+    console.log(`Work mongoDB`);
+    return await connectToDatabase();
+  } else if (process.env.SAVE_DATA_IN_FILE === 'true') {
+    console.log(`Work DB in file`);
+    dbInMemory.setUsersData(await dataFile.readUsers());
+    dbInMemory.setTodosData(await dataFile.readTodo());
+  }
+  console.log(`Work DB in memory`);
+}
 
 export async function findOneUser(login: string) {
   if (process.env.SAVE_DATA_IN_DB === 'true') {
@@ -77,52 +87,4 @@ export async function deleteOneTodo(user: string, todoID: string) {
   }
 }
 
-
-// functions for working with the database
-async function findOneUserDB(login: string) {
-  let collUser = collections.user;
-  if (collUser === undefined) { throw new Error('no connect DB'); }
-  return await collUser.findOne({ autUser: login });
-}
-
-async function insertOneUserDB(login: string, pass: string) {
-  let collUser = collections.user;
-  if (collUser === undefined) { throw new Error('no connect DB'); }
-  return await collUser.insertOne({ autUser: login, autPass: pass });
-}
-
-async function getAllTodosDB(user: string) {
-  const collTodo = collections.todo;
-  if (!collTodo) { throw new Error('no connect DB'); }
-  const todos = (await collTodo.find({ user: user }).toArray()) as unknown as Todo[];
-  todos.map(todo => todo['id'] = `${todo._id}`);
-  return todos;
-}
-
-async function findOneTodoDB(user: string, todo: string) {
-  let collTodo = collections.todo;
-  if (!collTodo) { throw new Error('no connect DB'); }
-  return await collTodo.findOne({ user: user, text: todo });
-}
-
-async function insertOneTodoDB(todo: Todo) {
-  let collTodo = collections.todo;
-  if (!collTodo) { throw new Error('no connect DB'); }
-  return await collTodo.insertOne(todo);
-}
-
-async function updateOneTodoDB(user: string, todo: Todo) {
-  const query = { user: user, _id: new ObjectId(todo.id) };
-  todo.user = user;
-  const collTodo = collections.todo;
-  if (!collTodo) { throw new Error('no connect DB'); }
-  return await collTodo.updateOne(query, { $set: todo });
-}
-
-async function deleteOneTodoDB(user: string, todoID: string) {
-  const query = { user: user, _id: new ObjectId(todoID) };
-  const collTodo = collections.todo;
-  if (!collTodo) { throw new Error('no connect DB'); }
-  return await collTodo.deleteOne(query);
-}
 

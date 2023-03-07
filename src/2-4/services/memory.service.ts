@@ -85,5 +85,13 @@ export default class dbInMemory {
     return this.todosData.slice();
   }
 
+  static setUsersData(usersData: User[]) {
+    this.usersData = usersData;
+  }
+
+  static setTodosData(todosData: dataTodo[]) {
+    this.todosData = todosData;
+  }
+
 }
 

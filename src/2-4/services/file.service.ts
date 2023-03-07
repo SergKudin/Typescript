@@ -1,10 +1,14 @@
+import { fileURLToPath } from 'url';
+import path, { dirname } from 'path';
 import dbInMemory from "./memory.service.js";
 import fs, { writeFile } from "fs";
-import path from "path";
 
 const filePath: string = '../dataFiles';
-const fileUsers: string = process.env.NAME_FILE_USERS ?? 'users.json';
-const fileTodo: string = process.env.NAME_FILE_TODO ?? 'todos.json';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+const dataFileDir = path.join(__dirname, filePath);
+const fileUsers: string = path.join(dataFileDir, process.env.NAME_FILE_USERS ?? 'users.json');
+const fileTodo: string = path.join(dataFileDir, process.env.NAME_FILE_TODO ?? 'todos.json');
 
 export default class dataFile {
 
@@ -18,21 +22,19 @@ export default class dataFile {
     return await writeFileDB(fileTodo, data);
   }
 
-  static readUsers() {
-    return readFileDB(fileUsers);
+  static async readUsers() {
+    return JSON.parse(await readFileDB(fileUsers));
   }
 
-  static readTodo() {
-    return readFileDB(fileTodo);
+  static async readTodo() {
+    return JSON.parse(await readFileDB(fileTodo));
   }
 
 }
 
 async function writeFileDB(fileName: string, data: string): Promise<boolean> {
   try {
-    console.log(`file write = ` + path.join(__dirname, filePath, fileName));
-
-    await fs.promises.writeFile(path.join(__dirname, filePath, fileName), data);
+    await fs.promises.writeFile(fileName, data);
     return true;
   } catch (err) {
     console.log(`Error write file ${fileName}`);
@@ -42,9 +44,7 @@ async function writeFileDB(fileName: string, data: string): Promise<boolean> {
 
 async function readFileDB(fileName: string): Promise<string> {
   try {
-    console.log(`file read = ` + path.join(__dirname, filePath, fileName));
-
-    return await fs.promises.readFile(path.join(__dirname, filePath, fileName), 'utf8');
+    return await fs.promises.readFile(fileName, 'utf8');
   } catch (err) {
     console.log(`Error read file ${fileName}`);
     return '';

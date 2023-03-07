@@ -1,22 +1,24 @@
 import express from "express";
-import { ObjectId } from "mongodb";
-import { connectToDatabase } from "./services/database.service.js"
 import { routes } from "./routes/routes.js";
 import cors from 'cors';
 import morgan from 'morgan';
 import session from 'express-session';
 import sessionFileStore from 'session-file-store'
+import * as dotenv from "dotenv";
+import { preparedStart } from "./services/data.service.js";
 
 declare module "express-session" {
   export interface Session {
     userID?: string;
   }
 }
+dotenv.config();
 
 const FileStore = sessionFileStore(session);
 const fileStoreOptions = { path: "../sessions" };
 
-const PORT = process.env.PORT ?? 3005;
+const ip = process.env.IP ?? '127.0.0.100';
+const PORT = Number(process.env.PORT ?? 3005);
 const app = express();
 
 app.use(cors());
@@ -30,12 +32,13 @@ app.use(session({
   cookie: { maxAge: 1000 * 60 * 60 * 2 },  // ms*s*m*h
 }));
 
-connectToDatabase()
+// connectToDatabase()
+preparedStart()
   .then(() => {
     app.use(routes);
 
-    app.listen(PORT, () => {
-      console.log(`Server started at http://localhost:${PORT}`);
+    app.listen(PORT, ip, () => {
+      console.log(`Server started at http://${ip}:${PORT}`);
     });
   })
   .catch((error: Error) => {
