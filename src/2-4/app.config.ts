@@ -2,6 +2,9 @@ import session from 'express-session';
 import sessionFileStore from 'session-file-store'
 import * as dotenv from "dotenv";
 import { CorsOptions } from 'cors';
+import fs from 'fs';
+import { fileURLToPath } from 'url';
+import path, { dirname } from 'path';
 
 declare module "express-session" {
   export interface Session {
@@ -9,7 +12,22 @@ declare module "express-session" {
   }
 }
 
+
 dotenv.config();
+
+// https config
+const filePath: string = 'SSL';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+const dataFileDir = path.join(__dirname, filePath);
+
+const sslKey: string = path.join(dataFileDir, process.env.NAME_FILE_KEY || '');
+const sslCrt: string = path.join(dataFileDir, process.env.NAME_FILE_CRT || '');
+
+export const httpsOptions = {
+  key: fs.readFileSync(sslKey),
+  cert: fs.readFileSync(sslCrt)
+};
 
 //Adress data
 export const adr = {
