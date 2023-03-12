@@ -1,44 +1,26 @@
 import express from "express";
-import { routes } from "./routes/routes.js";
 import cors from 'cors';
 import morgan from 'morgan';
 import session from 'express-session';
-import sessionFileStore from 'session-file-store'
-import * as dotenv from "dotenv";
+import { routes } from "./routes/routes.js";
 import { preparedStart } from "./services/data.service.js";
+import { adr, corsOptions, sessionConf } from "./app.config.js";
 
-declare module "express-session" {
-  export interface Session {
-    userID?: string;
-  }
-}
-dotenv.config();
-
-const FileStore = sessionFileStore(session);
-const fileStoreOptions = { path: "../sessions" };
-
-const ip = process.env.IP ?? '127.0.0.100';
-const PORT = Number(process.env.PORT ?? 3005);
 const app = express();
 
-app.use(cors());
-app.options('*', cors());
-app.use(morgan('dev'))
-app.use(session({
-  store: new FileStore(fileStoreOptions),
-  secret: process.env.SESSION_SECRET || 'Y{MTNjiSQ;KdnvaeoircOIHJOji:sw`a!JpAi|c',
-  resave: true,                          // https://stackoverflow.com/questions/40381401/when-to-use-saveuninitialized-and-resave-in-express-session
-  saveUninitialized: true,
-  cookie: { maxAge: 1000 * 60 * 60 * 2 },  // ms*s*m*h
-}));
+app.use(cors(corsOptions))
+  .options('*', cors());
 
-// connectToDatabase()
+if (process.env.DEBUG === 'true') app.use(morgan('dev'));
+
+app.use(session(sessionConf));
+
 preparedStart()
   .then(() => {
     app.use(routes);
 
-    app.listen(PORT, ip, () => {
-      console.log(`Server started at http://${ip}:${PORT}`);
+    app.listen(adr.PORT, adr.ip, () => {
+      console.log(`Server started at ${`http://${adr.ip}:${adr.PORT}`}`);
     });
   })
   .catch((error: Error) => {

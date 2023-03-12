@@ -1,5 +1,4 @@
 import { ObjectId } from "mongodb";
-import Todo from "./todo.js";
 
 export default class User {
   constructor(

@@ -1,17 +1,20 @@
-var _a;
 import express from "express";
-import { connectToDatabase } from "./services/database.service.js";
-import { staticHTML } from "./routes/routes.js";
 import cors from 'cors';
+import morgan from 'morgan';
+import session from 'express-session';
+import { routes } from "./routes/routes.js";
+import { preparedStart } from "./services/data.service.js";
+import { adr, corsOptions, sessionConf } from "./app.config.js";
 const app = express();
-app.use(cors());
-app.options('*', cors());
-const PORT = (_a = process.env.PORT) !== null && _a !== void 0 ? _a : 3005;
-connectToDatabase()
+app.use(cors(corsOptions));
+if (process.env.DEBUG === 'true')
+    app.use(morgan('dev'));
+app.use(session(sessionConf));
+preparedStart()
     .then(() => {
-    app.use(staticHTML);
-    app.listen(PORT, () => {
-        console.log(`Server started at http://localhost:${PORT}`);
+    app.use(routes);
+    app.listen(adr.PORT, adr.ip, () => {
+        console.log(`Server started at ${`http://${adr.ip}:${adr.PORT}`}`);
     });
 })
     .catch((error) => {

@@ -3,8 +3,8 @@
 import express, { Request, Response } from "express";
 import { fileURLToPath } from 'url';
 import path, { dirname } from 'path';
-import { v1UsersRouter } from "./users.router.js";
-import { v2RoutsMap } from "./v2.map.js";
+import { v2Router } from "./v2.routers.js";
+import { v1Router } from "./v1.routers.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -14,17 +14,10 @@ const staticDir = path.join(__dirname, '../', 'HTTP');
 export const routes = express.Router();
 routes.use(express.json());
 
-routes.use("/api/v1", v1UsersRouter);
-routes.route("/api/v2/router").post((req: Request, res: Response) => {
+routes.use("/api/v1", v1Router);
+routes.use("/api/v2", v2Router);
 
-  const func = v2RoutsMap.get(`${req.query.action}`);
-  if (func) {
-    func(req, res);
-  } else {
-    res.status(404).send(JSON.stringify({ error: `Not found` }));
-  }
-});
-
+// route for get index.html 
 routes.use("/static", express.static(staticDir));
 
 routes.get('/', (req: Request, res: Response) => {
@@ -34,5 +27,4 @@ routes.get('/', (req: Request, res: Response) => {
     res.status(404).send(JSON.stringify({ error: `${(err as Error).message}` }));
   }
 })
-
 

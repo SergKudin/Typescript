@@ -1,8 +1,10 @@
+// External Dependencies
 import Todo from "../Models/todo.js";
 import { connectToDatabase, deleteOneTodoDB, findOneTodoDB, findOneUserDB, getAllTodosDB, insertOneTodoDB, insertOneUserDB, updateOneTodoDB } from "../services/database.service.js";
 import dataFile from "./file.service.js";
 import dbInMemory from "./memory.service.js";
 
+// data mode selection functions
 export async function preparedStart() {
   if (process.env.SAVE_DATA_IN_DB === 'true') {
     console.log(`Work mongoDB`);

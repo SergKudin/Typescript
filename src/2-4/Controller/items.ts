@@ -3,8 +3,9 @@ import express, { Request, Response } from "express";
 import Todo from "../Models/todo.js";
 import { deleteOneTodo, findOneTodo, getAllTodos, insertOneTodo, updateOneTodo } from "../services/data.service.js";
 
-// Global Config
+// processing requests to work with Todo
 export const getAllItems = async function (req: Request, res: Response) {
+  console.log(JSON.stringify(req.session));
   try {
     if (req.session.userID) {
       res.status(200).send(JSON.stringify({ items: await getAllTodos(req.session.userID) }));
@@ -19,6 +20,7 @@ export const getAllItems = async function (req: Request, res: Response) {
 export const postItems = async function (req: Request, res: Response) {
   try {
     let newTodo = req.body as Todo;
+    console.log(JSON.stringify(req.session));
     if (req.session.userID) {
       const chekTodo = await findOneTodo(req.session.userID, newTodo.text);
       if (!chekTodo) {
@@ -41,6 +43,7 @@ export const postItems = async function (req: Request, res: Response) {
 
 export const putItems = async function (req: Request, res: Response) {
   try {
+    console.log(JSON.stringify(req.session));
     if (req.session.userID) {
       let todo = req.body as Todo;
       const result = await updateOneTodo(req.session.userID, todo);
@@ -58,6 +61,7 @@ export const putItems = async function (req: Request, res: Response) {
 
 export const delItems = async function (req: Request, res: Response) {
   try {
+    console.log(JSON.stringify(req.session));
     if (req.session.userID) {
       const result = await deleteOneTodo(req.session.userID, req.body.id);
       if (result && result.deletedCount) {

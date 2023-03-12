@@ -21,7 +21,7 @@ export async function connectToDatabase() {
   console.log(`Successfully connected to database: ${db.databaseName} and collection: ${todosCollection.collectionName}`);
 }
 
-// functions for working with the database
+// functions for working with mongoDB
 export async function findOneUserDB(login: string) {
   let collUser = collections.user;
   if (collUser === undefined) { throw new Error('no connect DB'); }
