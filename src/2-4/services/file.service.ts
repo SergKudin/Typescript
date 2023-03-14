@@ -1,13 +1,12 @@
 // External Dependencies
-import { fileURLToPath } from 'url';
-import path, { dirname } from 'path';
-import dbInMemory from "./memory.service.js";
 import fs from "fs";
+import path from 'path';
+import { __dirname } from '../app.config.js';
+import dbInMemory from "./memory.service.js";
 
 const filePath: string = 'dataFiles';
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-const dataFileDir = path.join(__dirname, '..', filePath);
+
+const dataFileDir = path.join(__dirname, filePath);
 
 const fileUsers: string = path.join(dataFileDir, process.env.NAME_FILE_USERS ?? 'users.json');
 const fileTodo: string = path.join(dataFileDir, process.env.NAME_FILE_TODO ?? 'todos.json');

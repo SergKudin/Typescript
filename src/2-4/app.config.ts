@@ -12,13 +12,12 @@ declare module "express-session" {
   }
 }
 
-
 dotenv.config();
 
 // https config
 const filePath: string = 'SSL';
 const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+export const __dirname = dirname(__filename);
 const dataFileDir = path.join(__dirname, filePath);
 
 const sslKey: string = path.join(dataFileDir, process.env.NAME_FILE_KEY || '');
@@ -31,14 +30,14 @@ export const httpsOptions = {
 
 //Adress data
 export const adr = {
-  ip: process.env.IP ?? '127.0.0.100',
+  ip: process.env.IP ?? '',
   PORT: Number(process.env.PORT ?? 3005),
 }
 
 //CORS config
 export const corsOptions: CorsOptions = {
   credentials: true,
-  origin: true //'http://localhost:8080'
+  origin: true
 }
 
 // Session config

@@ -1,14 +1,12 @@
 
 // External Dependencies
 import express, { Request, Response } from "express";
-import { fileURLToPath } from 'url';
-import path, { dirname } from 'path';
+import path from 'path';
+import { __dirname } from "../app.config.js";
 import { v2Router } from "./v2.routers.js";
 import { v1Router } from "./v1.routers.js";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-const staticDir = path.join(__dirname, '../', 'HTTP');
+const staticDir = path.join(__dirname, 'HTTP');
 
 // Global Config
 export const routes = express.Router();
