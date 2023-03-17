@@ -8,6 +8,7 @@ export const login = async function (req: Request, res: Response) {
   try {
     // { "login": "...", "pass": "..." }
     const { login, pass } = req.body;
+    // console.log(JSON.stringify("login " + login + "  pass " + pass));
     const chekUser = await findOneUser(login);
     if (chekUser) {
       const passCompareResult = bcrypt.compareSync(pass, chekUser.autPass);
@@ -38,6 +39,7 @@ export const logout = async function (req: Request, res: Response) {
 export const register = async function (req: Request, res: Response) {
   try {
     const { login, pass } = req.body;
+    // console.log(JSON.stringify("login " + login + "  pass " + pass));
     const chekUser = await findOneUser(login);
 
     if (!chekUser) {

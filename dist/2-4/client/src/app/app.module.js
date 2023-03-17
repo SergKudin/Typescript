@@ -11,12 +11,14 @@ const core_1 = require("@angular/core");
 const platform_browser_1 = require("@angular/platform-browser");
 const app_routing_module_1 = require("./app-routing.module");
 const app_component_1 = require("./app.component");
+const todo_component_1 = require("./components/todo/todo.component");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
     (0, core_1.NgModule)({
         declarations: [
-            app_component_1.AppComponent
+            app_component_1.AppComponent,
+            todo_component_1.AppTodo
         ],
         imports: [
             platform_browser_1.BrowserModule,

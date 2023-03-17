@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { todo } from 'src/app/data/todo';
 import { todos } from 'src/app/data/todos';
 import { ITodo } from 'src/app/models/todo';
 import { ITodos } from 'src/app/models/todos';
@@ -10,6 +11,9 @@ import { ITodos } from 'src/app/models/todos';
 export class AppTodo {
   title = 'todo';
 
-  @Input() todo: ITodo[];
+  @Input() todo: ITodo;
+  @Input() index: number;
+
+  check = false;
 
 }

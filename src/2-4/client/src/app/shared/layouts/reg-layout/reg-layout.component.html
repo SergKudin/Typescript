@@ -1,0 +1,40 @@
+  <div 
+  class="w-full p-6 m-auto bg-white rounded-md shadow-md lg:max-w-xl"
+  >
+      <h1 class="text-3xl font-semibold text-center text-lime-700 underline">
+         Регистрация
+      </h1>
+      <form 
+        class="mt-6"
+        [formGroup]="formRegisr"
+        (ngSubmit)="onSubmit()"
+        >
+          <div class="mb-2">
+              <label class="block text-sm font-semibold text-gray-800">
+                  Пользователь
+              </label>
+              <input
+                  type="text"
+                  class="block w-full px-4 py-2 mt-2 text-lime-700 bg-white border rounded-md focus:border-lime-400 focus:ring-lime-300 focus:outline-none focus:ring focus:ring-opacity-40"
+                  formControlName="regUser"
+              />
+          </div>
+          <div class="mb-2">
+              <label class="block text-sm font-semibold text-gray-800">
+                  Пароль
+              </label>
+              <input
+                  type="password"
+                  class="block w-full px-4 py-2 mt-2 text-lime-700 bg-white border rounded-md focus:border-lime-400 focus:ring-lime-300 focus:outline-none focus:ring focus:ring-opacity-40"
+                  formControlName="regPass"
+              />
+          </div>
+          <div class="mt-6">
+              <button 
+                type="submit"
+                class="w-full px-4 py-2 font-semibold tracking-wide text-white transition-colors duration-200 transform bg-lime-700 rounded-md hover:bg-lime-600 focus:outline-none focus:bg-lime-600">
+                  Зарегестрироваться
+              </button>
+          </div>
+      </form>
+  </div>
