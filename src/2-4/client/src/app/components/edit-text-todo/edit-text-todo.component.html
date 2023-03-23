@@ -1,0 +1,26 @@
+<form 
+  [formGroup]="form"
+  (ngSubmit)="submit()"
+  >
+
+  <input 
+    type="text"
+    class="border w-full py-2 px-4 mb-2"
+    placeholder="Опишите Вашу задачу..."
+    formControlName="title"
+    appFocus
+    >
+
+    <p 
+      class="text-red-500 font-medium mb-2 text-xs"
+      *ngIf="title.errors?.minlength && title.touched"> 
+      Описание задачи не может быть короче 6 знаков!
+    </p>
+
+    <button
+      type="submit"
+      class="py-2 px-4 bg-green-600"
+      >
+      Изменить
+    </button>
+</form>

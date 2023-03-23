@@ -1,15 +1,33 @@
-<div class="py-4 px-6 border rounded flex items-center flex-row mb-2 bg-lime-600" (click)="check= !check">
+<div 
+  class=" px-2 border rounded flex items-center flex-row mb-2 bg-lime-600"
+  >
 
-  <span class="px-1 mb-2 text-lg">
-    {{ index }}. 
-    </span>
+    <span 
+      class="px-1 mb-2 text-lg" 
+    >
+      {{ index }}. 
+      </span>
 
-    <span class="px-2 mb-2 text-lg" [ngClass]="{'line-through': check}">
-    {{ todo.text }}
-    </span>
+    <span 
+      class="px-2 mb-2 text-lg hover:text-blue-900" [ngClass]="{'line-through': todo.checked}"
+      (click)="checkTodo(todo)"
+      >
+      {{ todo.text }}
+      </span> 
+  <div class=" ml-auto md:h-14 md:flex md:flex-row md:items-center md:justify-end md:space-x-1 md:space-y-0">
+    <button 
+      class="border py-2 px-2 rounded "  
+      (click)="editTodo(todo)"
+      > ✎️ </button>
+    <button 
+      class=" border py-2 px-4 rounded "  
+      (click)="deleteTodo(todo)"
+      >&times;
+    </button>
+  </div>
 
-  <button class="border py-2 px-2 rounded"  disabled="disabled">✎️</button>
-  <button class="border py-2 px-4 rounded"  disabled="disabled"> X </button>
- 
-  <button type="submit"></button>
+  <app-edit-todo [index]="index" *ngIf="editTodoService.isVisible$ | async">
+    <app-edit-text-todo [todo]="todo"></app-edit-text-todo>
+   </app-edit-todo>
+
 </div>

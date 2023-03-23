@@ -1,0 +1,21 @@
+<p>todo-layout works!</p>
+
+<div class="max-w-2xl container mx-auto pt-5">
+  
+  <h1 class="text-4xl font-bold mb-2 text-center"> {{ todos[0].user }} </h1>
+ 
+  <h1 class="text-xl font-bold underline">
+   Current Todo:
+ </h1>
+ 
+  <p *ngIf="loading" class="text-center text-lg">Loading...</p>
+   <!-- <app-todo  [todo]="todos[0]" ></app-todo>
+   <app-todo  [todo]="todos[1]" ></app-todo> -->
+ 
+   <app-todo  
+     *ngFor="let todo of todos let i=index" 
+     [todo]="todo"
+     [index]="i + 1"
+   ></app-todo>
+ 
+ </div>

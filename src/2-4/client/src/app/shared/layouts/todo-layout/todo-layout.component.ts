@@ -1,32 +1,45 @@
 import { Component, OnInit } from '@angular/core';
-import { todo } from 'src/app/data/todo';
 import { ITodo } from 'src/app/models/todo';
-import { TodoService } from 'src/app/shared/services/todo.services';
+import { AddTodoService } from 'src/app/services/add-todo.service';
+import { AuphServices } from 'src/app/services/auth.services';
+import { EditTodoService } from 'src/app/services/edit-todo.service';
+import { TodoService } from 'src/app/services/todo.services';
 
 @Component({
   selector: 'app-todo-layout',
   templateUrl: './todo-layout.component.html',
 })
 export class TodoLayoutComponent implements OnInit {
-  title = 'client';
   // todos: ITodo[] = [];
   loading = false;
-  todos: ITodo[] = todo;
   index: number;
+  user: string;
 
-  constructor(private todosService: TodoService) { }
+  constructor(
+    public todosService: TodoService,
+    public addTodoService: AddTodoService,
+    public editTodoService: EditTodoService,
+    public auphServices: AuphServices
+  ) { }
 
   ngOnInit(): void {
     this.loading = true;
-    // this.todosService.userLogin().subscribe(out => {
-    //   console.log(out);
-    //   this.loading = false;
-    // });
-    this.todosService.getAll().subscribe(todo => {
-      console.log(todo);
-      // this.todos = todo;
-      this.loading = false;
-    });
+
+    this.todosService.getAll().subscribe({
+      // () => {
+      //   // this.todos = todo.items;
+      //   // this.user = todo.items[0].user;
+      //   this.loading = false;
+      // },
+      error: (e) => {
+        console.error(e);
+        alert(e.error.error);
+      },
+      complete: () => {
+        this.loading = false;
+      }
+    }
+    );
   }
 
 

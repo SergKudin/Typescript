@@ -11,7 +11,12 @@ import { SiteLayoutComponent } from './shared/layouts/site-layout/site-layout.co
 import { RegLayoutComponent } from './shared/layouts/reg-layout/reg-layout.component';
 import { LoginLayoutComponent } from './shared/layouts/login-layout/login-layout.component';
 import { TodoLayoutComponent } from './shared/layouts/todo-layout/todo-layout.component'
-import { AuphServices } from './shared/services/auth.services';
+import { GlobalErrorComponent } from './components/global-error/global-error.component';
+import { CreateTodoComponent } from './components/create-todo/create-todo.component';
+import { FocusDirective } from './directives/focus.directive';
+import { ModalComponent } from './components/modal/modal.component';
+import { EditTodoComponent } from './components/edit-todo/edit-todo.component';
+import { EditTextTodoComponent } from './components/edit-text-todo/edit-text-todo.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +26,13 @@ import { AuphServices } from './shared/services/auth.services';
     SiteLayoutComponent,
     RegLayoutComponent,
     LoginLayoutComponent,
-    TodoLayoutComponent
+    TodoLayoutComponent,
+    GlobalErrorComponent,
+    ModalComponent,
+    CreateTodoComponent,
+    FocusDirective,
+    EditTodoComponent,
+    EditTextTodoComponent
   ],
   imports: [
     BrowserModule,
@@ -30,7 +41,7 @@ import { AuphServices } from './shared/services/auth.services';
     FormsModule,
     ReactiveFormsModule
   ],
-  providers: [],
+  providers: [EditTextTodoComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
