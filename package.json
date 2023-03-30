@@ -8,10 +8,10 @@
       "pre-commit": "npm run lint"
     }
   },
-  "main": "2-4/index.js",
+  "main": "3-1/index.js",
   "scripts": {
     "dev": "npx nodemon",
-    "start": "npm run build && node dist/2-4/index.js",
+    "start": "npm run build && node dist/3-1/index.js",
     "build": "rimraf ./dist && npx tsc",
     "lint": "npx eslint ./src",
     "format": "npx eslint ./src --fix"

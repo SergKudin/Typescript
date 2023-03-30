@@ -8,13 +8,55 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppTodo = void 0;
 const core_1 = require("@angular/core");
-const todo_1 = require("src/app/data/todo");
 let AppTodo = class AppTodo {
-    constructor() {
-        this.title = 'todo';
-        this.todoComp = todo_1.todo;
+    constructor(router, todoService, editTodoService, editTextTodoComponent) {
+        this.router = router;
+        this.todoService = todoService;
+        this.editTodoService = editTodoService;
+        this.editTextTodoComponent = editTextTodoComponent;
     }
+    ngOnDestroy() {
+        if (this.aSub) {
+            this.aSub.unsubscribe();
+        }
+    }
+    checkTodo(todo) {
+        todo.checked = !todo.checked;
+        const { text, id, checked, user } = todo;
+        this.todoService.editTodo({ text, id, checked, user })
+            .subscribe({
+            error: (e) => {
+                console.error(e);
+                alert(e.error.error);
+            },
+            complete: () => {
+                this.todoService.updateTodo();
+            }
+        });
+    }
+    deleteTodo(todo) {
+        this.aSub = this.todoService.deleteTodo(todo.id).subscribe({
+            error: (e) => {
+                console.error(e);
+                alert(e.error.error);
+            },
+            complete: () => {
+                this.todoService.updateTodo();
+            }
+        });
+    }
+    editTodo(todo) {
+        this.editTodoService.open();
+        let text;
+    }
+    ;
 };
+__decorate([
+    (0, core_1.Input)()
+], AppTodo.prototype, "index", void 0);
+__decorate([
+    (0, core_1.Input)()
+], AppTodo.prototype, "todo", void 0);
 AppTodo = __decorate([
     (0, core_1.Component)({
         selector: 'app-todo',

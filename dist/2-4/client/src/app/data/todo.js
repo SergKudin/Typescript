@@ -2,13 +2,13 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.todo = void 0;
 exports.todo = [{
-        text: "qnvsdfkjdk jn fkd dvj ndjf nldfkn d xdk n",
+        text: "Покрасить соседского кота, подкинуть улики собаке",
         id: "1",
         checked: true,
         user: "w"
     },
     {
-        text: "edfjioakdm fdo feokf moskfmoaem oae maoef mao j",
+        text: "Сделать доброе дело, убедиться, чтобы все о этом узнали. еще пишем много текста для проверки того как длинный текст помещается в поле",
         id: "2",
         checked: true,
         user: "w"
