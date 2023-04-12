@@ -1,0 +1,1 @@
+UPDATE books SET booksPgsClick =  ? where  booksId=?;

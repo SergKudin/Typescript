@@ -1,0 +1,1 @@
+select COUNT(`booksId`) as `nBook` from `books`

@@ -1,0 +1,1 @@
+SELECT booksPgsClick FROM books WHERE booksId=?

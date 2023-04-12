@@ -1,26 +1,19 @@
 import express from "express";
 import http from "http";
-import cors from 'cors';
 import morgan from 'morgan';
-import session from 'express-session';
+import { preparedStart } from "./services/data.servise.js";
+import { adr, httpOptions, httpsOptions } from "./app.config.js";
 import { routes } from "./routes/routes.js";
-import { preparedStart } from "./services/data.service.js";
-import { adr, corsOptions, httpsOptions, sessionConf, } from "./app.config.js";
 
 const app = express();
 
-app.use(cors(corsOptions))
-  .options('*', cors());
-
 if (process.env.DEBUG === 'true') app.use(morgan('dev'));
-
-app.use(session(sessionConf));
 
 preparedStart()
   .then(() => {
     app.use(routes);
 
-    https.createServer(httpsOptions, app).listen(adr.PORT, adr.ip, () => {
+    http.createServer(httpOptions, app).listen(adr.PORT, adr.ip, () => {
       console.log(`Server started at ${`https://${adr.ip}:${adr.PORT}`}`);
     });
   })

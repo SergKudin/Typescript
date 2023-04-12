@@ -1,0 +1,1 @@
+SELECT booksBtnClick FROM books WHERE booksId=?
