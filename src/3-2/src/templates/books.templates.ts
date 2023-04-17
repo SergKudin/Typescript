@@ -39,7 +39,6 @@ async function getBooks(): Promise<Book[]> {
     book.autors = [];
     a.filter(autor => autor.booksId === book.booksId)
       .forEach((autor, i) => book.autors[i] = autor.autorsName);
-    // console.log(JSON.stringify(book));
   }
   return b;
 }

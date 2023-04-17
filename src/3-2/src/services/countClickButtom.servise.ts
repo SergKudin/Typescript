@@ -2,7 +2,7 @@ import { dbCollection } from "./data.servise.js";
 import sqlFile from "./file.service.js";
 
 export async function getIsbnBooks(id: number): Promise<number> {
-  const [booksBtnClick, fieldsAutors] = await dbCollection.query(await sqlFile.getQuery('getClickButtom'), id);
+  const [booksBtnClick, fields] = await dbCollection.query(await sqlFile.getQuery('getClickButtom'), id);
   const clickButtom = booksBtnClick as Array<{ 'booksBtnClick': number }> || 0;
   return clickButtom[0].booksBtnClick;
 }

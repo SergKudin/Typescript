@@ -1,5 +1,5 @@
 import express, { Request, Response } from "express";
-import { executeQuery } from "../controller/sqlQuerys.js";
+import { executeQuery } from "../controller/sqlQuerys.controller.js";
 import { getBook, getBookHtml } from "../templates/book.templates.js";
 import { log } from "console";
 import { incrementIsbnBooks } from "../services/countClickButtom.servise.js";
@@ -19,6 +19,8 @@ v1Router.get("/items", executeQuery)
     try {
       const dateIn: Array<string> = req.url.split('/');
       const bookId: number = Number(dateIn[2]);
+      console.log(dateIn);
+
       const email: string | undefined = dateIn[3]?.split('=').pop();
       if (!email) {
         incrementIspgBooks(bookId);

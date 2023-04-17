@@ -7,6 +7,7 @@ import { v1Router } from "./v1.routes.js";
 import { getBooksHtml } from "../templates/books.templates.js";
 import { getBookHtml } from "../templates/book.templates.js";
 import { addElementsBooks, removeElementsBooks } from "../services/paginationPgs.service.js";
+import { getAdminHtml } from "../templates/admin.template.js";
 
 const staticDir = path.join(__dirname, 'HTML');
 
@@ -43,6 +44,13 @@ routes.get('/', async (req: Request, res: Response) => {
       res.status(404).send(JSON.stringify({ error: `${(err as Error).message}` }));
     }
   })
+  .get('/admin', async (req: Request, res: Response) => {
+    try {
+      res.status(200).send(await getAdminHtml());
+    } catch (err) {
+      res.status(404).send(JSON.stringify({ error: `${(err as Error).message}` }));
+    }
+  })
   .route('/book/*').get(async (req: Request, res: Response) => {
     try {
       const bookId: number = Number(req.url.split('/').pop());
@@ -50,6 +58,6 @@ routes.get('/', async (req: Request, res: Response) => {
     } catch (err) {
       res.status(404).send(JSON.stringify({ error: `${(err as Error).message}` }));
     }
-  });
+  })
 
 
