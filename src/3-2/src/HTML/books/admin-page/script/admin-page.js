@@ -20,14 +20,14 @@ function delBook(id) {
     .then(inputValue => {
       if (inputValue) {
         console.log('for delaled ' + inputValue);
-        doAjaxQuery('GET', '/admin/api/v1/books/' + inputValue + '/remove', null, function (res) {
+        doAjaxQuery('GET', '/api/v1/admin/books/' + inputValue + '/remove', null, function (res) {
           swal({
             title: 'Удалено!',
             text: 'Надеюсь, вы осознаете что сейчас произошло ))',
             icon: 'success'
           },
             function () {
-              window.location.href = '/admin';
+              window.location.href = '/api/v1/admin';
             });
         });
       }

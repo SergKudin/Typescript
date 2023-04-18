@@ -14,7 +14,7 @@ preparedStart()
     app.use(routes);
 
     http.createServer(httpOptions, app).listen(adr.PORT, adr.ip, () => {
-      console.log(`Server started at ${`https://${adr.ip}:${adr.PORT}`}`);
+      console.log(`Server started at ${`http://${adr.ip}:${adr.PORT}`}`);
     });
   })
   .catch((error: Error) => {

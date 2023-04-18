@@ -1,6 +1,6 @@
 import path from "path";
 import { readFile } from "../services/file.service.js";
-import { __dirname } from "../app.config.js";
+import { __dirname, adr } from "../app.config.js";
 import { getActPagePagination, getNumPagePagination, getSubArrPageBooks } from "../services/paginationAdm.service.js";
 import Book from "../models/book.models.js";
 
@@ -42,11 +42,11 @@ async function getPagination(): Promise<string> {
 <nav aria-label="admin-page pagination">
   <ul class="pagination justify-content-center">
     <li class="page-item ${(actPages === 0) ? 'disabled' : ''}">
-      <a class="page-link" href="#" ${(actPages === 0) ? ' tabindex="-1" aria-disabled="true"' : ''}>Предыдущая</a>
+      <a class="page-link" href="http://${adr.ip}:${adr.PORT}/api/v1/admin/pagination/prev" ${(actPages === 0) ? ' tabindex="-1" aria-disabled="true"' : ''}>Предыдущая</a>
     </li>
 ${getNumbersPages(actPages, nPages)}
     <li class="page-item ${((actPages + 1) === nPages) ? 'disabled' : ''}">
-      <a class="page-link" href="#" ${((actPages + 1) === nPages) ? ' tabindex="-1" aria-disabled="true"' : ''}>Следующая</a>
+      <a class="page-link" href="http://${adr.ip}:${adr.PORT}/api/v1/admin/pagination/next" ${((actPages + 1) === nPages) ? ' tabindex="-1" aria-disabled="true"' : ''}>Следующая</a>
     </li>
   </ul>
 </nav>
@@ -57,8 +57,9 @@ ${getNumbersPages(actPages, nPages)}
 function getNumbersPages(actPages: number, nPages: number): string {
   let s = ``;
   for (let page = 0; page < nPages; page++) {
-    s = s + '\n'
-      + `<li class="page-item ${(actPages === page) ? 'active' : ''}"><a class="page-link" href="#">${page + 1}</a></li>`;
+    const href = (actPages === page) ? `#` : `http://${adr.ip}:${adr.PORT}/api/v1/admin/pagination/${page}`;
+    const actPage = (actPages === page) ? 'active' : '';
+    s = s + '\n' + `<li class="page-item ${actPage}"><a class="page-link" href="${href}">${page + 1}</a></li>`;
   }
   return s;
 }
