@@ -1,1 +1,1 @@
-SELECT * FROM autors WHERE booksId=?
+SELECT * FROM autors WHERE booksId=? and softDelete = 0

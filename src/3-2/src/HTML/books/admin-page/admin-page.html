@@ -80,38 +80,38 @@
       
       <!-- create new book -->
 <p></p>
-<form >
+<form role="form" id="addNewBookForm">
   <div class="container">
    <label for="basic-url" class="form-label">Добавить новую книгу</label>
    <div class="row align-items-start">
       <div class="col">
         <div class="input-group mb-3">
           <span class="input-group-text" id="basic-addon1"></span>
-          <input type="text" class="form-control" placeholder="Наименование книги" aria-label="booksName" aria-describedby="basic-addon1">
+          <input type="text" class="form-control" placeholder="Наименование книги" aria-label="booksName" id="booksName" aria-describedby="basic-addon1" required>
         </div>
         <div class="input-group mb-3">
           <span class="input-group-text" id="basic-addon2"></span>
-          <input type="text" class="form-control" placeholder="Год" aria-label="booksYear" aria-describedby="basic-addon2">
+          <input type="text" class="form-control" placeholder="Год" aria-label="booksYear" id="booksYear" aria-describedby="basic-addon2" required>
         </div>
         <div class="input-group mb-3">
-          <input type="file" class="form-control" multiple accept="image/*,image/jpeg" id="inputGroupFile02">
+          <input type="file" class="form-control" multiple accept="image/*,image/jpeg" id="inputGroupFile">
         </div>
       </div>
       <div class="col">
         <div class="input-group mb-3">
           <span class="input-group-text" id="basic-addon3"></span>
-          <input type="text" class="form-control" placeholder="Автор 1" aria-label="autors[0]" aria-describedby="basic-addon3">
+          <input type="text" class="form-control" placeholder="Автор 1" aria-label="autors[0]" id="autors1" aria-describedby="basic-addon3" required>
         </div>
         <div class="input-group mb-3">
           <span class="input-group-text" id="basic-addon4"></span>
-          <input type="text" class="form-control" placeholder="Автор 2" aria-label="autors[1]" aria-describedby="basic-addon4">
+          <input type="text" class="form-control" placeholder="Автор 2" aria-label="autors[1]" id="autors2" aria-describedby="basic-addon4">
         </div>
         <div class="input-group mb-3">
           <span class="input-group-text" id="basic-addon5"></span>
-          <input type="text" class="form-control" placeholder="Автор 3" aria-label="autors[2]" aria-describedby="basic-addon5">
+          <input type="text" class="form-control" placeholder="Автор 3" aria-label="autors[2]" id="autors3" aria-describedby="basic-addon5">
         </div>
         <div class="input-group mb-3">
-          <textarea  type="text" class="form-control" placeholder="Описание содержания книги" aria-label="booksDescription" aria-describedby="basic-addon6"></textarea>
+          <textarea  type="text" class="form-control" rows="5" placeholder="Описание содержания книги" aria-label="booksDescription" id="booksDescription" aria-describedby="basic-addon6" required></textarea>
         </div>
       </div>
       <div>

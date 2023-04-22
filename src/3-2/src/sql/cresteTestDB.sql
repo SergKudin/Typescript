@@ -11,44 +11,45 @@ DROP TABLE IF EXISTS `books`;
 
 CREATE TABLE `books` (
   `booksId` int NOT NULL AUTO_INCREMENT,
-  `booksImg` varchar(50) DEFAULT NULL,
+  `booksImg` varchar(50) DEFAULT 'noIMG.jpg',
   `booksName` varchar(250) NOT NULL,
   `booksDescription` varchar(1000) DEFAULT NULL,
   `booksYear` year DEFAULT NULL,
   `booksPages` smallint unsigned DEFAULT NULL,
   `booksPgsClick` int unsigned DEFAULT NULL,
   `booksBtnClick` int unsigned DEFAULT NULL,
+  `softDelete` int unsigned DEFAULT 0,
   PRIMARY KEY (`booksId`)
 ) ENGINE=InnoDB;
 
 INSERT INTO `books`(`booksId`, `booksImg`,  `booksName`) VALUE 
--- (22, '/books-page_files/22.jpg', 'СИ++ И КОМПЬЮТЕРНАЯ ГРАФИКА'),
-(23, '/books-page_files/23.jpg', 'Программирование на языке Go!'),
-(25, '/books-page_files/25.jpg', 'Толковый словарь сетевых терминов и аббревиатур'),
-(26, '/books-page_files/26.jpg', 'Python for Data Analysis'),
-(27, '/books-page_files/27.jpg', 'Thinking in Java (4th Edition)'),
-(29, '/books-page_files/29.jpg', 'Introduction to Algorithms'),
-(31, '/books-page_files/31.jpg', 'JavaScript Pocket Reference'),
-(32, '/books-page_files/32.jpg', 'Adaptive Code via C#: Class and Interface Design, Design Patterns, and SOLID Principles'),
-(33, '/books-page_files/33.jpg', 'SQL: The Complete Referenc'),
-(34, '/books-page_files/34.jpg', 'PHP and MySQL Web Development'),
-(35, '/books-page_files/35.jpg', 'Статистический анализ и визуализация данных с помощью R'),
-(36, '/books-page_files/36.jpg', 'Computer Coding for Kid'),
-(37, '/books-page_files/37.jpg', 'Exploring Arduino: Tools and Techniques for Engineering Wizardry'),
-(38, '/books-page_files/38.jpg', 'Программирование микроконтроллеров для начинающих и не только'),
-(39, '/books-page_files/39.jpg', 'The Internet of Things'),
-(40, '/books-page_files/40.jpg', 'Sketching User Experiences: The Workbook'),
-(41, '/books-page_files/41.jpg', 'InDesign CS6'),
-(42, '/books-page_files/42.jpg', 'Адаптивный дизайн. Делаем сайты для любых устройств'),
-(43, '/books-page_files/43.jpg', 'Android для разработчиков'),
-(44, '/books-page_files/44.jpg', 'Clean Code: A Handbook of Agile Software Craftsmanship'),
-(45, '/books-page_files/45.jpg', 'Swift Pocket Reference: Programming for iOS and OS X'),
-(46, '/books-page_files/46.jpg', 'NoSQL Distilled: A Brief Guide to the Emerging World of Polyglot Persistence'),
-(47, '/books-page_files/47.jpg', 'Head First Ruby'),
-(48, '/books-page_files/48.jpg', 'Practical Vim');
+-- (22, '22.jpg', 'СИ++ И КОМПЬЮТЕРНАЯ ГРАФИКА'),
+(23, '23.jpg', 'Программирование на языке Go!'),
+(25, '25.jpg', 'Толковый словарь сетевых терминов и аббревиатур'),
+(26, '26.jpg', 'Python for Data Analysis'),
+(27, '27.jpg', 'Thinking in Java (4th Edition)'),
+(29, '29.jpg', 'Introduction to Algorithms'),
+(31, '31.jpg', 'JavaScript Pocket Reference'),
+(32, '32.jpg', 'Adaptive Code via C#: Class and Interface Design, Design Patterns, and SOLID Principles'),
+(33, '33.jpg', 'SQL: The Complete Referenc'),
+(34, '34.jpg', 'PHP and MySQL Web Development'),
+(35, '35.jpg', 'Статистический анализ и визуализация данных с помощью R'),
+(36, '36.jpg', 'Computer Coding for Kid'),
+(37, '37.jpg', 'Exploring Arduino: Tools and Techniques for Engineering Wizardry'),
+(38, '38.jpg', 'Программирование микроконтроллеров для начинающих и не только'),
+(39, '39.jpg', 'The Internet of Things'),
+(40, '40.jpg', 'Sketching User Experiences: The Workbook'),
+(41, '41.jpg', 'InDesign CS6'),
+(42, '42.jpg', 'Адаптивный дизайн. Делаем сайты для любых устройств'),
+(43, '43.jpg', 'Android для разработчиков'),
+(44, '44.jpg', 'Clean Code: A Handbook of Agile Software Craftsmanship'),
+(45, '45.jpg', 'Swift Pocket Reference: Programming for iOS and OS X'),
+(46, '46.jpg', 'NoSQL Distilled: A Brief Guide to the Emerging World of Polyglot Persistence'),
+(47, '47.jpg', 'Head First Ruby'),
+(48, '48.jpg', 'Practical Vim');
 
 INSERT INTO `books`(`booksId`, `booksImg`,  `booksName`, `booksDescription`,  `booksYear`, `booksPages`, `booksPgsClick`, `booksBtnClick`) VALUE 
-(22, '/books-page_files/22.jpg', 'СИ++ И КОМПЬЮТЕРНАЯ ГРАФИКА', 'Лекции и практикум по программированию на Си++', 2003, 351, 10, 2);
+(22, '22.jpg', 'СИ++ И КОМПЬЮТЕРНАЯ ГРАФИКА', 'Лекции и практикум по программированию на Си++', 2003, 351, 10, 2);
 
 --select * from `books`;
 
@@ -58,6 +59,7 @@ CREATE TABLE `autors` (
   `autorsId` int NOT NULL AUTO_INCREMENT,
   `autorsName` varchar(100) NOT NULL,
   `booksId` int NOT NULL,
+  `softDelete` int unsigned DEFAULT 0,
   PRIMARY KEY (`autorsId`),
   FOREIGN KEY (`booksId`)  REFERENCES `books` (`booksId`)
 ) ENGINE=InnoDB;

@@ -1,0 +1,1 @@
+SELECT MAX(booksId) as booksId FROM books

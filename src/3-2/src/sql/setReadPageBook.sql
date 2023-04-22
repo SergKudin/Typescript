@@ -1,1 +1,1 @@
-UPDATE books SET booksPgsClick =  ? where  booksId=?;
+UPDATE books SET booksPgsClick =  ? where  booksId=? and softDelete = 0

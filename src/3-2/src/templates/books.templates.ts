@@ -5,6 +5,7 @@ import { dbCollection } from "../services/data.servise.js";
 import { __dirname, adr } from "../app.config.js";
 import Autor from "../models/autor.models.js";
 import { getElementsBooksInPages, getMaxElementsBooksInPages, getMinElementsBooksInPages } from "../services/paginationPgs.service.js";
+import { sql } from "../services/query.servise.js";
 
 const filePath1: string = 'HTML';
 const filePath2: string = 'books';
@@ -16,7 +17,7 @@ export async function getBooksHtml(): Promise<string> {
   const strForInsertBooks: string = '<!-- insert books -->';
   const html: string = await insertButtonHtml(readFile(file));
   return html
-    .replace(strForInsertBooks, getBooksTemplate(await getBooks()));
+    .replace(strForInsertBooks, getBooksTemplate(await sql.getBooks()));
 }
 
 async function insertButtonHtml(htmlin: Promise<string>): Promise<string> {
@@ -29,26 +30,12 @@ function getBooksTemplate(books: Book[]): string {
   return books.map(book => getBookTemplate(book)).join('\n');
 }
 
-async function getBooks(): Promise<Book[]> {
-  const elements: number = getElementsBooksInPages();
-  const [autors, fieldsAutors] = await dbCollection.query(await sqlFile.getQuery('allAutors'));
-  const [books, fieldsBooks] = await dbCollection.query(await sqlFile.getQuery('booksLim'), elements);
-  const b = books as Book[];
-  const a = autors as Autor[];
-  for (let book of b) {
-    book.autors = [];
-    a.filter(autor => autor.booksId === book.booksId)
-      .forEach((autor, i) => book.autors[i] = autor.autorsName);
-  }
-  return b;
-}
-
 function getBookTemplate(bookItem: Book): string {
   const href = `/book/${bookItem.booksId}`;
   const autors = (bookItem.autors) ? bookItem.autors.join(', ') : '';
   return `<div data-book-id="${bookItem.booksId}" class="book_item col-xs-6 col-sm-3 col-md-2 col-lg-2">
 <div class="book">
-    <a href="${href}"><img src="./static/${filePath2}/${filePath3}${bookItem.booksImg}" alt="${bookItem.booksName}">
+    <a href="${href}"><img src="./static/img/${(bookItem.booksImg) ? bookItem.booksImg : 'noIMG.jpg'}" alt="${bookItem.booksName}">
         <div data-title="${bookItem.booksName}" class="blockI" style="height: 46px;">
             <div data-book-title="${bookItem.booksName}" class="title size_text">${bookItem.booksName}</div>
             <div data-book-author="${autors}" class="author">${autors}</div>

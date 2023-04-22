@@ -1,0 +1,1 @@
+UPDATE autors SET softDelete = 1 where booksId=?;

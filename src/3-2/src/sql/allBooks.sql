@@ -1,1 +1,1 @@
-select * from `books`
+select * from `books` where softDelete = 0

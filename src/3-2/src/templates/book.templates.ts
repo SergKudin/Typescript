@@ -4,6 +4,7 @@ import sqlFile, { readFile } from "../services/file.service.js";
 import { dbCollection } from "../services/data.servise.js";
 import { __dirname } from "../app.config.js";
 import Autor from "../models/autor.models.js";
+import { sql } from "../services/query.servise.js";
 
 const filePath1: string = 'HTML';
 const filePath2: string = 'books';
@@ -15,29 +16,27 @@ export async function getBookHtml(bookId: number) {
   const file: string = path.join(__dirname, filePath, 'book-page.html');
   const strForInsertBooks: string = '<!-- Insert content -->';
   const html: string = await readFile(file);
-  const book: Book = await getBook(bookId);
+  const book: Book = await sql.getBookId(bookId);
   return html
     .replace(strForInsertBooks, getBookTemplate(book));
 }
 
-export async function getBook(bookId: number): Promise<Book> {
-  // console.log('run getBooks id=' + bookId);
-
-  const [autors, fieldsAutors] = await dbCollection.query(await sqlFile.getQuery('idAutors'), bookId);
-  const a = autors as Autor[];
-  const [books, fieldsBooks] = await dbCollection.query(await sqlFile.getQuery('idBooks'), bookId);
-  const b = books as Book[];
-  for (let book of b) {
-    book.autors = [];
-    a.filter(autor => autor.booksId === book.booksId)
-      .forEach((autor, i) => book.autors[i] = autor.autorsName);
-    // console.log(JSON.stringify(book));
-  }
-  return b[0];
-}
+// export async function getBookId(bookId: number): Promise<Book> {
+//   const [autors, fieldsAutors] = await dbCollection.query(await sqlFile.getQuery('idAutors'), bookId);
+//   const a = autors as Autor[];
+//   const [books, fieldsBooks] = await dbCollection.query(await sqlFile.getQuery('idBooks'), bookId);
+//   const b = books as Book[];
+//   for (let book of b) {
+//     book.autors = [];
+//     a.filter(autor => autor.booksId === book.booksId)
+//       .forEach((autor, i) => book.autors[i] = autor.autorsName);
+//     // console.log(JSON.stringify(book));
+//   }
+//   return b[0];
+// }
 
 function getBookTemplate(bookItem: Book) {
-  const imgSrc = (bookItem.booksImg) ? `../static/${filePath2}/${filePath4}${bookItem.booksImg}` : '';
+  const imgSrc = (bookItem.booksImg) ? `../static/img/${bookItem.booksImg}` : '../static/img/noIMG.jpg';
   const autors = (bookItem.autors) ? bookItem.autors.join(', ') : '';
   const BookTemplate: string = `<!-- start -->
 <div id="content" class="book_block col-xs-12 col-sm-12 col-md-12 col-lg-12">

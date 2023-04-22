@@ -20,6 +20,7 @@ export async function getAdminHtml(): Promise<string> {
 }
 
 async function getTableBooks(): Promise<string> {
+  console.log('getTableBooks');
   const books: Book[] = await getSubArrPageBooks();
   const tbody: string = books.map((book, i) => {
     return `<tr>

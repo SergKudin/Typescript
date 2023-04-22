@@ -1,0 +1,1 @@
+INSERT INTO books(booksId, booksImg,  booksName, booksDescription,  booksYear, booksPages, booksPgsClick, booksBtnClick, softDelete) VALUES (?, ?, ?, ?, ?, ?, 0, 0, 0);

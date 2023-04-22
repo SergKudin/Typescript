@@ -1,0 +1,1 @@
+INSERT INTO autors(autorsId, autorsName,  booksId, softDelete) VALUE (?, ?, ?, 0)

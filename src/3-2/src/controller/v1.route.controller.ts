@@ -1,11 +1,12 @@
 import { Request, Response } from "express";
 import { incrementIspgBooks } from "../services/countReadPageBook.servise.js";
-import { getBook } from "../templates/book.templates.js";
 import { incrementIsbnBooks } from "../services/countClickButtom.servise.js";
 import { getAdminHtml } from "../templates/admin.template.js";
 import { getActPagePagination, setActPagePagination } from "../services/paginationAdm.service.js";
+import Book from "../models/book.models.js";
+import { sql } from "../services/query.servise.js";
 
-export const v1RouteCtrl = { getBooks, getAdminPage, getAdminAddFunc };
+export const v1RouteCtrl = { getBooks, getAdminPage, getAdminAddFunc, addNewBook };
 
 type EmailRes = {
   success: boolean;
@@ -54,15 +55,14 @@ async function getBookPage(bookId: number): Promise<EmailRes> {
     booksPages,
     booksPgsClick,
     booksBtnClick,
-  } = await getBook(bookId);
+  } = await sql.getBookId(bookId);
   return { success: true, data: { id: bookId, event: true, isbn: booksBtnClick || 0, description: booksDescription } }
 }
 
 //  /api/v1/admin
 async function getAdminPage(req: Request, res: Response) {
   try {
-    console.log((req.body));
-
+    console.log('getAdminPage')
     res.status(200).send(await getAdminHtml());
   } catch (err) {
     res.status(404).send(JSON.stringify({ error: `${(err as Error).message}` }));
@@ -72,10 +72,13 @@ async function getAdminPage(req: Request, res: Response) {
 async function getAdminAddFunc(req: Request, res: Response) {
   try {
     const dateIn: Array<string> = req.url.split('/');
-    console.log(dateIn);
-    if (dateIn[2] === 'pagination') await adminAddFuncPagination(dateIn);
-    if (dateIn[2] === 'books') await adminAddFuncBooks(dateIn);
-    res.redirect("/api/v1/admin");
+    if (dateIn[2] === 'pagination') {
+      await adminAddFuncPagination(dateIn);
+      res.redirect("/api/v1/admin");
+      return;
+    }
+    if (dateIn[2] === 'books')
+      res.status(200).send(await adminAddFuncBooks(dateIn));
   } catch (err) {
     res.status(404).send(JSON.stringify({ error: `${(err as Error).message}` }));
   }
@@ -98,13 +101,36 @@ async function adminAddFuncPagination(dateIn: string[]) {
 }
 
 //  /api/v1/admin/books/26/remove - remove book
-async function adminAddFuncBooks(dateIn: string[]) {
+async function adminAddFuncBooks(dateIn: string[]): Promise<{ success: boolean; }> {
   const booksId: number = Number(dateIn[3]);
   if (Number.isNaN(booksId)) throw new Error("The book ID is not a number.");
-  if (dateIn[4] === 'remove') deleteBook(booksId);
+  if (dateIn[4] === 'remove')
+    return await sql.softDeleteBook(booksId);
+  return { success: false };
 }
 
-function deleteBook(booksId: number) {
-  throw new Error("Function not implemented.");
+async function addNewBook(req: Request, res: Response) {
+  try {
+    let filedata: Express.Multer.File | undefined = req.file;
+    // console.log('filedata = ');
+    // console.log(filedata);
+    // console.log('req.body = ');
+    // console.log(req.body.newBook);
+
+    const newBook = JSON.parse(req.body.newBook) as Book;
+    console.log(newBook);
+
+    await sql.addNewBook(newBook, filedata);
+
+    res.status(200).send({ success: true });
+  } catch (err) {
+    res.status(404).send(JSON.stringify({ error: `${(err as Error).message}` }));
+  }
+
 }
+
+// async function addFile(req: Request, res: Response): Promise<{ success: boolean; }> {
+
+//   return { success: true };
+// }
 
