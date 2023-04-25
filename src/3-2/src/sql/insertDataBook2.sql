@@ -1,0 +1,2 @@
+INSERT INTO `books`(`booksId`, `booksImg`,  `booksName`, `booksDescription`,  `booksYear`, `booksPages`, `booksPgsClick`, `booksBtnClick`) VALUE 
+(22, '22.jpg', 'СИ++ И КОМПЬЮТЕРНАЯ ГРАФИКА', 'Лекции и практикум по программированию на Си++', 2003, 351, 10, 2);

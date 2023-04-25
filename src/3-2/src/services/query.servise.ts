@@ -5,28 +5,41 @@ import sqlFile from "./file.service.js";
 import fs from "fs";
 import { getElementsBooksInPages } from "./paginationPgs.service.js";
 
+let systemStart = true;
+
 export const sql = {
   addNewBook, getBooks, getBookId, softDeleteBook, getIsbnBooks, getIspgBooks,
-  getAllIdBooks, getBooksWhereIdInPage, countBooks
+  getAllIdBooks, getBooksWhereIdInPage, countBooks, foundBooks, createNewDB
 };
+
+async function createNewDB() {
+  if (systemStart && ((process.env.CREATE_NEW_DB ?? 'false') === 'true')) {
+    console.log(`CREATE NEW DB!!!`)
+    await queryConveyor(['dropTableBooks', 'dropTableAutors', 'dropTableBooksAutors',
+      'createTableBooks', 'createTableAutors', 'createTableBooksAutors',
+      'insertDataBook', 'insertDataBook2', 'insertDataAutors', 'insertDataBooksAutors']);
+    systemStart = false;
+    console.log(`NEW DB CREATED!!!`);
+  }
+}
+
+async function queryConveyor(arrQuery: string[]) {
+  for (let query of arrQuery) {
+    await dbCollection.query(await sqlFile.getQuery(query));
+  }
+}
 
 async function addNewBook(newBook: Book, filedata?: Express.Multer.File): Promise<boolean> {
   newBook = await addBookId(newBook);
   newBook.booksImg = await addImgFile(newBook, filedata);
-  console.log(newBook);
-
   await dbCollection.query(await sqlFile.getQuery('addBook'), [newBook.booksId, newBook.booksImg, newBook.booksName, newBook.booksDescription, newBook.booksYear, null]);
-
   for (let autor of newBook.autors) {
     let a: Autor = { autorsName: autor };
     a.autorsId = await getAutorsId(a);
-
     if (a.autorsId === 0) {
       a.autorsId = await getNewAutorId(a);
       await dbCollection.query(await sqlFile.getQuery('addAutor'), [a.autorsId, a.autorsName]);
     }
-    console.log(`getAutorsId(a) = `);
-    console.log(a);
     await dbCollection.query(await sqlFile.getQuery('addBooksAuthors'), [newBook.booksId, a.autorsId]);
   }
   return false;
@@ -77,19 +90,21 @@ async function addAutorsBooks(books: Book[]): Promise<Book[]> {
 async function getBooks(): Promise<Book[]> {
   const elements: number = getElementsBooksInPages();
   const [books, fieldsBooks] = await dbCollection.query(await sqlFile.getQuery('booksLim'), elements);
-  // const [autors, fieldsAutors] = await dbCollection.query(await sqlFile.getQuery('allAutors'));
   return await addAutorsBooks(books as Book[]);
 }
 
 async function getBookId(bookId: number): Promise<Book> {
   const [books, fieldsBooks] = await dbCollection.query(await sqlFile.getQuery('idBooks'), bookId);
-  // const [autors, fieldsAutors] = await dbCollection.query(await sqlFile.getQuery('idAutors'), bookId);
   return (await addAutorsBooks(books as Book[]))[0];
 }
 
 async function getBooksWhereIdInPage(subArrPage: string): Promise<Book[]> {
   const [books, fieldsBooks] = await dbCollection.query((await sqlFile.getQuery('booksWhereIdIn')).replace('?', subArrPage));
-  // const [autors, fieldsAutors] = await dbCollection.query(await sqlFile.getQuery('allAutors'));
+  return await addAutorsBooks(books as Book[]);
+}
+
+async function foundBooks(foundStr: string): Promise<Book[]> {
+  const [books, fields] = await dbCollection.query(await sqlFile.getQuery('foundBooks'), `%${foundStr}%`);
   return await addAutorsBooks(books as Book[]);
 }
 
@@ -101,7 +116,6 @@ async function countBooks(): Promise<number> {
 
 async function softDeleteBook(bookId: number): Promise<{ success: boolean; }> {
   await dbCollection.query(await sqlFile.getQuery('softDeleteBook'), bookId);
-  // await dbCollection.query(await sqlFile.getQuery('softDeleteAutors'), bookId);
   return { success: true };
 }
 

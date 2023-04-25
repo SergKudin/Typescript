@@ -1,3 +1,17 @@
+function readURL(input) {
+  if (input.files && input.files[0]) {
+    let reader = new FileReader();
+    reader.onloadend = function (e) {
+      $('#prevImage').attr('src', e.target.result);
+    }
+    reader.readAsDataURL(input.files[0]);
+  }
+}
+
+$("#inputGroupFile").change(function () {
+  readURL(this);
+});
+
 function delBook(id) {
   console.log('id = ' + id);
 

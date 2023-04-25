@@ -3,11 +3,13 @@ import { getBooksHtml } from "../templates/books.templates.js";
 import { addElementsBooks, removeElementsBooks } from "../services/paginationPgs.service.js";
 import { getAdminHtml } from "../templates/admin.template.js";
 import { getBookHtml } from "../templates/book.templates.js";
+import { sql } from "../services/query.servise.js";
 
 export const routeCtrl = { startPage, addBooksToPage, removeBooksToPage, getAdminPage, getBookPage };
 
 async function startPage(req: Request, res: Response) {
   try {
+    await sql.createNewDB();
     res.status(200).send(await getBooksHtml());
   } catch (err) {
     res.status(404).send(JSON.stringify({ error: `${(err as Error).message}` }));

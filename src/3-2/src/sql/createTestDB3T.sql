@@ -1,12 +1,6 @@
-
-DROP DATABASE IF EXISTS `shpptestbooksdb`;
-
-CREATE DATABASE `shpptestbooksdb`;
-
-USE `shpptestbooksdb`;
-
-/*Table structure for table `books` */
-
+-- DROP DATABASE IF EXISTS `shpptestbooksdb`;
+-- CREATE DATABASE `shpptestbooksdb`;
+-- USE `shpptestbooksdb`;
 DROP TABLE IF EXISTS `books`;
 
 CREATE TABLE `books` (
@@ -23,7 +17,6 @@ CREATE TABLE `books` (
 ) ENGINE=InnoDB;
 
 INSERT INTO `books`(`booksId`, `booksImg`,  `booksName`) VALUE 
--- (22, '22.jpg', 'СИ++ И КОМПЬЮТЕРНАЯ ГРАФИКА'),
 (23, '23.jpg', 'Программирование на языке Go!'),
 (25, '25.jpg', 'Толковый словарь сетевых терминов и аббревиатур'),
 (26, '26.jpg', 'Python for Data Analysis'),

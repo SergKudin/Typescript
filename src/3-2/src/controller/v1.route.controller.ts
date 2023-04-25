@@ -112,13 +112,7 @@ async function adminAddFuncBooks(dateIn: string[]): Promise<{ success: boolean; 
 async function addNewBook(req: Request, res: Response) {
   try {
     let filedata: Express.Multer.File | undefined = req.file;
-    // console.log('filedata = ');
-    // console.log(filedata);
-    // console.log('req.body = ');
-    // console.log(req.body.newBook);
-
     const newBook = JSON.parse(req.body.newBook) as Book;
-    // console.log(newBook);
 
     await sql.addNewBook(newBook, filedata);
 
