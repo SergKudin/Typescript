@@ -1,1 +1,1 @@
-select COUNT(`booksId`) as `nBook` from `books`  where softDelete = 0
+select COUNT(`booksId`) as `nBook` from `books`  where `softDelete` = 0

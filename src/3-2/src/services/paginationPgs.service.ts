@@ -1,14 +1,11 @@
-import { dbCollection } from "./data.servise.js";
-import sqlFile from "./file.service.js";
+import { sql } from "./query.servise.js";
 
 const numBooksPagesMin: number = 10;
 let numBooksPages: number = numBooksPagesMin;
 let numBooksPagesMax: number = numBooksPagesMin;
 
 async function getElementsBooks() {
-  const [nBooks, fieldsAutors] = await dbCollection.query(await sqlFile.getQuery('countBooks'));
-  const countBooks = nBooks as Array<{ 'nBook': number }>;
-  numBooksPagesMax = countBooks[0].nBook;
+  numBooksPagesMax = await sql.countBooks();
 }
 
 export async function addElementsBooks() {

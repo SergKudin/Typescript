@@ -1,0 +1,1 @@
+INSERT INTO `books_authors` (`booksId`, `autorsId`) VALUE (?, ?)

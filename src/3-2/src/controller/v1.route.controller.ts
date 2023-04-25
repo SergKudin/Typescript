@@ -118,7 +118,7 @@ async function addNewBook(req: Request, res: Response) {
     // console.log(req.body.newBook);
 
     const newBook = JSON.parse(req.body.newBook) as Book;
-    console.log(newBook);
+    // console.log(newBook);
 
     await sql.addNewBook(newBook, filedata);
 
@@ -129,8 +129,4 @@ async function addNewBook(req: Request, res: Response) {
 
 }
 
-// async function addFile(req: Request, res: Response): Promise<{ success: boolean; }> {
-
-//   return { success: true };
-// }
 

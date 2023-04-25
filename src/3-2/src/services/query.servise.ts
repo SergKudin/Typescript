@@ -5,27 +5,38 @@ import sqlFile from "./file.service.js";
 import fs from "fs";
 import { getElementsBooksInPages } from "./paginationPgs.service.js";
 
-export const sql = { addNewBook, getBooks, getBookId, softDeleteBook };
-
+export const sql = {
+  addNewBook, getBooks, getBookId, softDeleteBook, getIsbnBooks, getIspgBooks,
+  getAllIdBooks, getBooksWhereIdInPage, countBooks
+};
 
 async function addNewBook(newBook: Book, filedata?: Express.Multer.File): Promise<boolean> {
-  let success = false;
   newBook = await addBookId(newBook);
   newBook.booksImg = await addImgFile(newBook, filedata);
-
   console.log(newBook);
 
   await dbCollection.query(await sqlFile.getQuery('addBook'), [newBook.booksId, newBook.booksImg, newBook.booksName, newBook.booksDescription, newBook.booksYear, null]);
 
   for (let autor of newBook.autors) {
     let a: Autor = { autorsName: autor };
-    a.booksId = newBook.booksId;
-    a = await addAutorId(a);
-    await dbCollection.query(await sqlFile.getQuery('addAutor'), [a.autorsId, a.autorsName, a.booksId]);
-    console.log(a);
-  }
+    a.autorsId = await getAutorsId(a);
 
-  return success;
+    if (a.autorsId === 0) {
+      a.autorsId = await getNewAutorId(a);
+      await dbCollection.query(await sqlFile.getQuery('addAutor'), [a.autorsId, a.autorsName]);
+    }
+    console.log(`getAutorsId(a) = `);
+    console.log(a);
+    await dbCollection.query(await sqlFile.getQuery('addBooksAuthors'), [newBook.booksId, a.autorsId]);
+  }
+  return false;
+}
+
+async function getAutorsId(autor: Autor): Promise<number> {
+  const [rows, fields] = await dbCollection.query(await sqlFile.getQuery('getAutorsId'), autor);
+  const autorId = rows as Array<{ 'autorsId': number }>;
+  console.log(autorId);
+  return (autorId.length === 0) ? 0 : autorId[0].autorsId;
 }
 
 async function addBookId(newBook: Book): Promise<Book> {
@@ -35,11 +46,10 @@ async function addBookId(newBook: Book): Promise<Book> {
   return newBook;
 }
 
-async function addAutorId(newAutor: Autor): Promise<Autor> {
+async function getNewAutorId(newAutor: Autor): Promise<number> {
   const [rows, fields] = await dbCollection.query(await sqlFile.getQuery('maxIdAutors'));
   const autorsId = rows as Array<{ 'autorsId': number }>;
-  newAutor.autorsId = autorsId[0].autorsId + 1;
-  return newAutor;
+  return (autorsId[0].autorsId + 1);
 }
 
 async function addImgFile(newBook: Book, filedata?: Express.Multer.File): Promise<string> {
@@ -56,36 +66,59 @@ async function addImgFile(newBook: Book, filedata?: Express.Multer.File): Promis
   return '';
 }
 
+async function addAutorsBooks(books: Book[]): Promise<Book[]> {
+  for (let book of books) {
+    const [autors, fieldsAutors] = await dbCollection.query(await sqlFile.getQuery('getAutorsBook'), book.booksId);
+    book.autors = (autors as Autor[]).map(autor => { return autor.autorsName });
+  };
+  return books;
+}
+
 async function getBooks(): Promise<Book[]> {
   const elements: number = getElementsBooksInPages();
-  const [autors, fieldsAutors] = await dbCollection.query(await sqlFile.getQuery('allAutors'));
   const [books, fieldsBooks] = await dbCollection.query(await sqlFile.getQuery('booksLim'), elements);
-  const b = books as Book[];
-  const a = autors as Autor[];
-  for (let book of b) {
-    book.autors = [];
-    a.filter(autor => autor.booksId === book.booksId)
-      .forEach((autor, i) => book.autors[i] = autor.autorsName);
-  }
-  return b;
+  // const [autors, fieldsAutors] = await dbCollection.query(await sqlFile.getQuery('allAutors'));
+  return await addAutorsBooks(books as Book[]);
 }
 
 async function getBookId(bookId: number): Promise<Book> {
-  const [autors, fieldsAutors] = await dbCollection.query(await sqlFile.getQuery('idAutors'), bookId);
-  const a = autors as Autor[];
   const [books, fieldsBooks] = await dbCollection.query(await sqlFile.getQuery('idBooks'), bookId);
-  const b = books as Book[];
-  for (let book of b) {
-    book.autors = [];
-    a.filter(autor => autor.booksId === book.booksId)
-      .forEach((autor, i) => book.autors[i] = autor.autorsName);
-    // console.log(JSON.stringify(book));
-  }
-  return b[0];
+  // const [autors, fieldsAutors] = await dbCollection.query(await sqlFile.getQuery('idAutors'), bookId);
+  return (await addAutorsBooks(books as Book[]))[0];
+}
+
+async function getBooksWhereIdInPage(subArrPage: string): Promise<Book[]> {
+  const [books, fieldsBooks] = await dbCollection.query((await sqlFile.getQuery('booksWhereIdIn')).replace('?', subArrPage));
+  // const [autors, fieldsAutors] = await dbCollection.query(await sqlFile.getQuery('allAutors'));
+  return await addAutorsBooks(books as Book[]);
+}
+
+async function countBooks(): Promise<number> {
+  const [nBooks, fieldsAutors] = await dbCollection.query(await sqlFile.getQuery('countBooks'));
+  const countBooks = nBooks as Array<{ 'nBook': number }>;
+  return countBooks[0].nBook;
 }
 
 async function softDeleteBook(bookId: number): Promise<{ success: boolean; }> {
   await dbCollection.query(await sqlFile.getQuery('softDeleteBook'), bookId);
-  await dbCollection.query(await sqlFile.getQuery('softDeleteAutors'), bookId);
+  // await dbCollection.query(await sqlFile.getQuery('softDeleteAutors'), bookId);
   return { success: true };
+}
+
+async function getIsbnBooks(id: number): Promise<number> {
+  const [booksBtnClick, fields] = await dbCollection.query(await sqlFile.getQuery('getClickButtom'), id);
+  const clickButtom = booksBtnClick as Array<{ 'booksBtnClick': number }> || 0;
+  return clickButtom[0].booksBtnClick;
+}
+
+async function getIspgBooks(id: number): Promise<number> {
+  const [booksPgsClick, fields] = await dbCollection.query(await sqlFile.getQuery('getReadPageBook'), id);
+  const countReadPage = booksPgsClick as Array<{ 'booksPgsClick': number }> || 0;
+  return countReadPage[0].booksPgsClick;
+}
+
+async function getAllIdBooks(): Promise<number[]> {
+  const [booksId, fields] = await dbCollection.query(await sqlFile.getQuery('getAllIdBooks'));
+  const arrObjId = booksId as Array<{ 'booksId': number }>;
+  return arrObjId.map(item => { return item.booksId })
 }

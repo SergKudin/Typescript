@@ -1,1 +1,1 @@
-INSERT INTO autors(autorsId, autorsName,  booksId, softDelete) VALUE (?, ?, ?, 0)
+INSERT INTO autors(autorsId, autorsName) VALUE (?, ?)

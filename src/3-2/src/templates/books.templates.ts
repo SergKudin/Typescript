@@ -1,9 +1,7 @@
 import path from "path";
 import Book from "../models/book.models.js";
-import sqlFile, { readFile } from "../services/file.service.js";
-import { dbCollection } from "../services/data.servise.js";
+import { readFile } from "../services/file.service.js";
 import { __dirname, adr } from "../app.config.js";
-import Autor from "../models/autor.models.js";
 import { getElementsBooksInPages, getMaxElementsBooksInPages, getMinElementsBooksInPages } from "../services/paginationPgs.service.js";
 import { sql } from "../services/query.servise.js";
 

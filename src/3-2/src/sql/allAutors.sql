@@ -1,1 +1,1 @@
-select * from `autors` where softDelete = 0 
+select `autorsId`, `autorsName` from `autors` 

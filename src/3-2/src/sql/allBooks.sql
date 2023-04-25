@@ -1,1 +1,1 @@
-select * from `books` where softDelete = 0
+select `booksId`, `booksImg`,  `booksName`, `booksDescription`,  `booksYear`, `booksPages`, `booksPgsClick`, `booksBtnClick` from `books` where softDelete = 0

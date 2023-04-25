@@ -1,1 +1,1 @@
-SELECT * FROM books WHERE booksId=? and softDelete = 0
+SELECT `booksId`, `booksImg`,  `booksName`, `booksDescription`,  `booksYear`, `booksPages`, `booksPgsClick`, `booksBtnClick` FROM `books` WHERE `booksId`=? and `softDelete` = 0

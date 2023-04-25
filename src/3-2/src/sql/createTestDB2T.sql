@@ -57,7 +57,7 @@ DROP TABLE IF EXISTS `autors`;
 
 CREATE TABLE `autors` (
   `autorsId` int NOT NULL AUTO_INCREMENT,
-  `autorsName` varchar(100) NOT NULL,
+  `autorsName` varchar(100) NOT NULL UNIQUE,
   `booksId` int NOT NULL,
   `softDelete` int unsigned DEFAULT 0,
   PRIMARY KEY (`autorsId`),
@@ -91,7 +91,5 @@ INSERT INTO `autors`(`autorsId`, `autorsName`,  `booksId`) VALUE
 (24, 'Дрю Нейл', 48);
 
 -- select * from `autors`;
-
-
 
 

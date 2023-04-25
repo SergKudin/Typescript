@@ -1,0 +1,1 @@
+select `autorsId` from `autors` where `autorsName` = ?;

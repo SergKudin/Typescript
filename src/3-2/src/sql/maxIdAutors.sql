@@ -1,1 +1,1 @@
-SELECT MAX(autorsId) as autorsId FROM autors
+SELECT MAX(`autorsId`) as `autorsId` FROM `autors`

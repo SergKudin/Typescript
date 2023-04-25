@@ -1,1 +1,1 @@
-SELECT * FROM books  where softDelete = 0 LIMIT ?
+SELECT `booksId`, `booksImg`,  `booksName`, `booksDescription`,  `booksYear`, `booksPages`, `booksPgsClick`, `booksBtnClick` FROM `books`  where softDelete = 0 LIMIT ?

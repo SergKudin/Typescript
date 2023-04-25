@@ -1,9 +1,7 @@
 import path from "path";
 import Book from "../models/book.models.js";
-import sqlFile, { readFile } from "../services/file.service.js";
-import { dbCollection } from "../services/data.servise.js";
+import { readFile } from "../services/file.service.js";
 import { __dirname } from "../app.config.js";
-import Autor from "../models/autor.models.js";
 import { sql } from "../services/query.servise.js";
 
 const filePath1: string = 'HTML';
@@ -20,20 +18,6 @@ export async function getBookHtml(bookId: number) {
   return html
     .replace(strForInsertBooks, getBookTemplate(book));
 }
-
-// export async function getBookId(bookId: number): Promise<Book> {
-//   const [autors, fieldsAutors] = await dbCollection.query(await sqlFile.getQuery('idAutors'), bookId);
-//   const a = autors as Autor[];
-//   const [books, fieldsBooks] = await dbCollection.query(await sqlFile.getQuery('idBooks'), bookId);
-//   const b = books as Book[];
-//   for (let book of b) {
-//     book.autors = [];
-//     a.filter(autor => autor.booksId === book.booksId)
-//       .forEach((autor, i) => book.autors[i] = autor.autorsName);
-//     // console.log(JSON.stringify(book));
-//   }
-//   return b[0];
-// }
 
 function getBookTemplate(bookItem: Book) {
   const imgSrc = (bookItem.booksImg) ? `../static/img/${bookItem.booksImg}` : '../static/img/noIMG.jpg';

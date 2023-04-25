@@ -1,1 +1,1 @@
-SELECT booksPgsClick FROM books WHERE booksId=? and softDelete = 0
+SELECT `booksPgsClick` FROM `books` WHERE `booksId`=? and `softDelete` = 0

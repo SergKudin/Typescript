@@ -1,1 +1,1 @@
-SELECT MAX(booksId) as booksId FROM books
+SELECT MAX(`booksId`) as `booksId` FROM `books`
