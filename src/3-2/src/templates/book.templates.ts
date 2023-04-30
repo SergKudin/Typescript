@@ -1,7 +1,7 @@
 import path from "path";
 import Book from "../models/book.models.js";
 import { readFile } from "../services/file.service.js";
-import { __dirname } from "../app.config.js";
+import { __dirname, adr } from "../app.config.js";
 import { sql } from "../services/query.servise.js";
 
 const filePath1: string = 'HTML';
@@ -13,8 +13,10 @@ const filePath: string = path.join(filePath1, filePath2, filePath3);
 export async function getBookHtml(bookId: number) {
   const file: string = path.join(__dirname, filePath, 'book-page.html');
   const strForInsertBooks: string = '<!-- Insert content -->';
-  const html: string = await readFile(file);
+  let html: string = await readFile(file);
   const book: Book = await sql.getBookId(bookId);
+  html = html.replace('https://programming.org.ua/ua', `http://${adr.ip}:${adr.PORT}`);
+  html = html.replace('getAdressAdminPage', `http://${adr.ip}:${adr.PORT}/api/v1/admin`);
   return html
     .replace(strForInsertBooks, getBookTemplate(book));
 }

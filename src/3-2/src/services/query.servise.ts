@@ -9,7 +9,7 @@ let systemStart = true;
 
 export const sql = {
   addNewBook, getBooks, getBookId, softDeleteBook, getIsbnBooks, getIspgBooks,
-  getAllIdBooks, getBooksWhereIdInPage, countBooks, foundBooks, createNewDB
+  getAllIdBooks, getBooksWhereIdInPage, countBooks, searchBooks, createNewDB
 };
 
 async function createNewDB() {
@@ -87,7 +87,7 @@ async function addAutorsBooks(books: Book[]): Promise<Book[]> {
   return books;
 }
 
-async function getBooks(): Promise<Book[]> {
+async function getBooks(): Promise<Book[]> {  // add func search
   const elements: number = getElementsBooksInPages();
   const [books, fieldsBooks] = await dbCollection.query(await sqlFile.getQuery('booksLim'), elements);
   return await addAutorsBooks(books as Book[]);
@@ -103,12 +103,12 @@ async function getBooksWhereIdInPage(subArrPage: string): Promise<Book[]> {
   return await addAutorsBooks(books as Book[]);
 }
 
-async function foundBooks(foundStr: string): Promise<Book[]> {
+async function searchBooks(foundStr: string): Promise<Book[]> {
   const [books, fields] = await dbCollection.query(await sqlFile.getQuery('foundBooks'), `%${foundStr}%`);
   return await addAutorsBooks(books as Book[]);
 }
 
-async function countBooks(): Promise<number> {
+async function countBooks(): Promise<number> {  // add func search
   const [nBooks, fieldsAutors] = await dbCollection.query(await sqlFile.getQuery('countBooks'));
   const countBooks = nBooks as Array<{ 'nBook': number }>;
   return countBooks[0].nBook;

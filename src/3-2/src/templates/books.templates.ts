@@ -13,14 +13,16 @@ const filePath: string = path.join(filePath1, filePath2, filePath3);
 export async function getBooksHtml(): Promise<string> {
   const file: string = path.join(__dirname, filePath, 'books-page.html');
   const strForInsertBooks: string = '<!-- insert books -->';
-  const html: string = await insertButtonHtml(readFile(file));
+  let html: string = await insertButtonHtml(readFile(file));
+  html = html.replace('https://programming.org.ua/ua', `http://${adr.ip}:${adr.PORT}`);
+  html = html.replace('getAdressAdminPage', `http://${adr.ip}:${adr.PORT}/api/v1/admin`);
   return html
     .replace(strForInsertBooks, getBooksTemplate(await sql.getBooks()));
 }
 
-async function insertButtonHtml(htmlin: Promise<string>): Promise<string> {
+async function insertButtonHtml(htmlIn: Promise<string>): Promise<string> {
   const strForInsertButtons: string = '<!-- insert buttons -->'
-  const html = await htmlin;
+  const html = await htmlIn;
   return html.replace(strForInsertButtons, await getButtonsPagination());
 }
 

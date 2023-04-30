@@ -34,6 +34,32 @@ async function removeBooksToPage(req: Request, res: Response) {
   }
 }
 
+async function startSearchPage(req: Request, res: Response) {
+  try {
+    res.status(200).send(await getBooksHtml());
+  } catch (err) {
+    res.status(404).send(JSON.stringify({ error: `${(err as Error).message}` }));
+  }
+}
+
+async function addBooksToSearchPage(req: Request, res: Response) {
+  try {
+    await addElementsBooks();
+    res.redirect("/");
+  } catch (err) {
+    res.status(404).send(JSON.stringify({ error: `${(err as Error).message}` }));
+  }
+}
+
+async function removeBooksToSearchPage(req: Request, res: Response) {
+  try {
+    await removeElementsBooks()
+    res.redirect("/");
+  } catch (err) {
+    res.status(404).send(JSON.stringify({ error: `${(err as Error).message}` }));
+  }
+}
+
 async function getAdminPage(req: Request, res: Response) {
   try {
     res.status(200).send(await getAdminHtml());

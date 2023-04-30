@@ -5,8 +5,9 @@ import { getAdminHtml } from "../templates/admin.template.js";
 import { getActPagePagination, setActPagePagination } from "../services/paginationAdm.service.js";
 import Book from "../models/book.models.js";
 import { sql } from "../services/query.servise.js";
+import { getSearchCodeHtml } from "../templates/search.templates.js";
 
-export const v1RouteCtrl = { getBooks, getAdminPage, getAdminAddFunc, addNewBook };
+export const v1RouteCtrl = { getBooks, getAdminPage, getAdminAddFunc, addNewBook, getSearch, getSearchHtml };
 
 type EmailRes = {
   success: boolean;
@@ -18,13 +19,65 @@ type EmailRes = {
   }
 }
 
+type HtmlBook = {
+  id: number;
+  title: string;
+  author: string;
+}
+
+async function getSearchHtml(req: Request, res: Response) {
+  try {
+    let search = decodeURIComponent(req.query.search as string)
+    res.status(200).send(await getSearchCodeHtml(search));
+  } catch (err) {
+    res.status(404).send(JSON.stringify({ error: `${(err as Error).message}` }));
+  }
+}
+
+
+async function getSearch(req: Request, res: Response) {
+  try {
+    const search: string | undefined = req.url.split('=').pop();
+    let result: HtmlBook[] = [];
+    if (search) {
+      result = (await sql.searchBooks(search)).map(book => {
+        return {
+          id: book.booksId || 0,
+          title: book.booksName,
+          author: (book.autors.length > 0) ? book.autors.join(', ') : ''
+        }
+      });
+    }
+    res.status(200).send(JSON.stringify({
+      success: true,
+      data: {
+        total: { amount: result.length },
+        books: result
+      }
+    }));
+
+    // console.log('getSearch = ' + JSON.stringify(result));
+    // res.redirect("/api/v1/books/22");
+  }
+  catch (err) {
+    res.status(404).send(JSON.stringify({ error: `${(err as Error).message}` }));
+  }
+}
+
+
 //  /api/v1/books/23 - open page
 //  /api/v1/books/23/order?email=xkfjgsfkj%40kjf.jh - reserve book
+//  /api/v1/books/search?search=php
 async function getBooks(req: Request, res: Response) {
   try {
+    // console.log('getBooks = ' + req.url);
     const dateIn: Array<string> = req.url.split('/');
     const bookId: number = Number(dateIn[2]);
     const email: string | undefined = dateIn[3]?.split('=').pop();
+    if (Number.isNaN(bookId)) {
+      return getSearchHtml(req, res);
+      // return getSearchHtml(dateIn[2].split('=').pop() || '', res);
+    }
     if (!email) {
       res.status(200).send(await getBookPage(bookId));
     }

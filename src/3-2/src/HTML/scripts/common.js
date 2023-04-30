@@ -182,6 +182,15 @@ var view = {
   },
   addMiniItemSearch: function (pathUrl, book) {
     var id = (book.id == 'no-cover') ? '#not_found' : '#miniItem';
+    $(id).html(`<div data-book-id="{id}" >
+    <div class="book">
+        <a href="{path}/book/{id}">
+            <div data-title="{title}" class="blockI" style="height: 34px;">
+                <div data-book-title="{title}" class="title size_text">{title}, {author}</div>
+            </div>
+        </a>
+    </div>
+    </div>`);
     return $(id).html()
       .replace(/{id}/g, book.id)
       .replace(/{path}/g, pathUrl)
@@ -190,21 +199,22 @@ var view = {
   },
   addMiniItemsSearch: function (pathUrl, books, text) {
     var content = $('#list');
-    content.html('');
+    content.html('<div id="miniItem"> </div><div id="no-cover"> </div>');
     var contentHTML = content.html();
-    var limitImetsInSearch = 3;
+    var limitImetsInSearch = 2;
     var n = 0;
     for (var i in books) {
       n++;
-      if (i <= limitImetsInSearch) {
+      if (i < limitImetsInSearch) {
         contentHTML += view.addMiniItemSearch(pathUrl, books[i]);
         content.attr('size', n);
       }
     }
     if (n > limitImetsInSearch) {
-      contentHTML += $('#more').html()
-        .replace(/{text}/g, text)
-        .replace(/{pathUrl}/g, pathUrl);
+      contentHTML += '<div data-book-id="0" ><div id="more" class="book"> хочешь больше результатов? жми - Enter</div></div>'
+      //   contentHTML += $('#more').html()
+      //     .replace(/{text}/g, text)
+      // .replace(/{pathUrl}/g, pathUrl);
     }
     content.html(contentHTML);
     content.show('fast');
@@ -245,18 +255,18 @@ function doAjaxQuery(method, url, data, callback) {
   });
 }
 
-$(function () {
-  $('.popup-modal').magnificPopup({
-    type: 'inline',
-    preloader: false,
-    focus: '#username',
-    modal: true
-  });
-  $(document).on('click', '.popup-modal-dismiss', function (e) {
-    e.preventDefault();
-    $.magnificPopup.close();
-  });
-});
+// $(function () {
+//   $('.popup-modal').magnificPopup({
+//     type: 'inline',
+//     preloader: false,
+//     focus: '#username',
+//     modal: true
+//   });
+//   $(document).on('click', '.popup-modal-dismiss', function (e) {
+//     e.preventDefault();
+//     $.magnificPopup.close();
+//   });
+// });
 
 var global = {
   items_limit_on_page_load: 24,

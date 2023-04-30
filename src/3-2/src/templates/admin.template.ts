@@ -12,6 +12,7 @@ const filePath: string = path.join(filePath1, filePath2, filePath3);
 export async function getAdminHtml(): Promise<string> {
   const file: string = path.join(__dirname, filePath, 'admin-page.html');
   let html: string = await readFile(file);
+  html = html.replace('https://programming.org.ua/ua', `http://${adr.ip}:${adr.PORT}`);
   let strForInsert: string = '<!-- insert tbody -->';
   html = html.replace(strForInsert, await getTableBooks());
   strForInsert = '<!-- pagination books table -->';
