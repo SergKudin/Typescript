@@ -75,7 +75,7 @@ $('#search').keydown(function (event) {
           $('#list').hide(200);
         });
       } else {
-        var url = 'http://' + window.location.host + pathUrl + '/api/v1/books/search?search=' + encodeText + '';
+        var url = 'http://' + window.location.host + pathUrl + '/api/v1/search?search=' + encodeText + '';
         window.location = url;
       }
     }
