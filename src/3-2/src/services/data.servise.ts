@@ -1,12 +1,10 @@
 import mysql from "mysql2";
 import { Pool } from "mysql2/promise";
+import { startCron } from "./cronTask.servise.js";
+import { readJSON } from "./file.service.js";
+"./cronTask.servise.js";
 
-const dataBaseSettings = {
-  host: "127.0.0.1",
-  user: "user",
-  database: "shpptestbooksdb",
-  password: "user"
-};
+const dataBaseSettings = await readJSON('src\\json\\dbConnection.json');
 
 // Global Variables
 export let dbCollection: Pool;
@@ -14,4 +12,5 @@ export let dbCollection: Pool;
 export async function preparedStart() {
   const pool = mysql.createPool(dataBaseSettings);
   dbCollection = pool.promise();
+  startCron;
 }

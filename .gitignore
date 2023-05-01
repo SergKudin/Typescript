@@ -1,3 +1,4 @@
 src/template/*
 src/template.rar
 dist/*
+/node_modules

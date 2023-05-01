@@ -11,6 +11,7 @@ export const v1RouteCtrl = {
   getBooks,
   reservBooks,
   getAdminPage,
+  adminPageLogout,
   getAdminPaginationNext,
   getAdminPaginationPrev,
   getAdminPaginationSet,
@@ -114,7 +115,17 @@ async function getAdminPage(req: Request, res: Response) {
   }
 }
 
-//  /api/v1/admin/pagination/next 
+async function adminPageLogout(req: Request, res: Response) {
+  try {
+    delete req.headers.authorization;
+    res.redirect("/api/v1/admin");
+    return;
+  } catch (err) {
+    res.status(404).send(JSON.stringify({ error: `${(err as Error).message}` }));
+  }
+}
+
+//  /api/v1/admin/pagination/next adminPageLogout
 async function getAdminPaginationNext(req: Request, res: Response) {
   try {
     await setActPagePagination(await getActPagePagination() + 1);

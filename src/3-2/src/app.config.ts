@@ -21,7 +21,6 @@ export const httpsOptions = {
 
 export const httpOptions = {};
 
-
 //Adress data
 export const adr = {
   ip: process.env.IP ?? '',

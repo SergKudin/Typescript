@@ -9,7 +9,8 @@ let systemStart = true;
 
 export const sql = {
   addNewBook, getBooks, getBookId, softDeleteBook, getIsbnBooks, getIspgBooks,
-  getAllIdBooks, getBooksWhereIdInPage, countBooks, searchBooks, createNewDB
+  getAllIdBooks, getBooksWhereIdInPage, countBooks, searchBooks, createNewDB,
+  getBooksForDel, delDataBook,
 };
 
 async function createNewDB() {
@@ -114,8 +115,9 @@ async function countBooks(): Promise<number> {  // add func search
   return countBooks[0].nBook;
 }
 
-async function softDeleteBook(bookId: number): Promise<{ success: boolean; }> {
-  await dbCollection.query(await sqlFile.getQuery('softDeleteBook'), bookId);
+async function softDeleteBook(id: number): Promise<{ success: boolean; }> {
+  const delTime = Date.now() + Number(process.env.PAUSE_HOURS_FOR_DELETE || 1) * 60 * 60 * 1000;
+  await dbCollection.query(await sqlFile.getQuery('softDeleteBook'), [delTime, id]);
   return { success: true };
 }
 
@@ -135,4 +137,15 @@ async function getAllIdBooks(): Promise<number[]> {
   const [booksId, fields] = await dbCollection.query(await sqlFile.getQuery('getAllIdBooks'));
   const arrObjId = booksId as Array<{ 'booksId': number }>;
   return arrObjId.map(item => { return item.booksId })
+}
+
+async function getBooksForDel(): Promise<{ booksId: number, softDelete: number }[]> {
+  const [books, fields] = await dbCollection.query(await sqlFile.getQuery('getBooksForDel'));
+  const arr = books as Array<{ 'booksId': number, 'softDelete': number }>;
+  return arr;
+}
+
+async function delDataBook(id: number) {
+  await dbCollection.query(await sqlFile.getQuery('delDataBooksAutors'), id);
+  await dbCollection.query(await sqlFile.getQuery('delDataBooks'), id);
 }

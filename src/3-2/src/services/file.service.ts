@@ -35,3 +35,13 @@ export async function readFile(fileName: string): Promise<string> {
     return '';
   }
 }
+
+export async function readJSON(fileName: string) {
+  try {
+    const f = await fs.promises.readFile(fileName);
+    return JSON.parse(f.toString());
+  } catch (err) {
+    console.log(`Error read file ${fileName}`);
+    return '';
+  }
+}

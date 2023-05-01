@@ -7,6 +7,6 @@ CREATE TABLE `books` (
   `booksPages` smallint unsigned DEFAULT NULL,
   `booksPgsClick` int unsigned DEFAULT NULL,
   `booksBtnClick` int unsigned DEFAULT NULL,
-  `softDelete` int unsigned DEFAULT 0,
+  `softDelete` BIGINT unsigned DEFAULT 0,
   PRIMARY KEY (`booksId`)
 ) ENGINE=InnoDB;

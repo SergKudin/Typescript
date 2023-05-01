@@ -1,1 +1,1 @@
-UPDATE `books` SET `softDelete` = 1 where `booksId` = ?;
+UPDATE `books` SET `softDelete` = ? where `booksId` = ?;

@@ -8,6 +8,7 @@ export const v1Router = express.Router();
 v1Router.use(express.json());
 
 v1Router.get('/admin', checkAuth, v1RouteCtrl.getAdminPage)
+  .get('/admin/logout', v1RouteCtrl.adminPageLogout)
   .get('/admin/pagination/next', v1RouteCtrl.getAdminPaginationNext)
   .get('/admin/pagination/prev', v1RouteCtrl.getAdminPaginationPrev)
   .get('/admin/pagination/:nPage', v1RouteCtrl.getAdminPaginationSet)
