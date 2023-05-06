@@ -21,6 +21,6 @@ routes.use("/static", express.static(staticDir));
 routes.get('/', routeCtrl.startPage)
   .get('/add', routeCtrl.addBooksToPage)
   .get('/remove', routeCtrl.removeBooksToPage)
-  .route('/book/*').get(routeCtrl.getBookPage);
+  .get('/book/:id', routeCtrl.getBookPage);
 
 

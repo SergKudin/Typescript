@@ -70,8 +70,8 @@ async function getAdminPage(req: Request, res: Response) {
 
 async function getBookPage(req: Request, res: Response) {
   try {
-    const bookId: number = Number(req.url.split('/').pop());
-    res.status(200).send(await getBookHtml(bookId));
+    const id = req.params.id;
+    res.status(200).send(await getBookHtml(+id));
   } catch (err) {
     res.status(404).send(JSON.stringify({ error: `${(err as Error).message}` }));
   }

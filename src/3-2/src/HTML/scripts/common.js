@@ -136,7 +136,7 @@ var view = {
           swal('Ошибка!', 'Вы где-то ошиблись. Проверьте введенные данные.', "error");
           throw null;
         }
-        doAjaxQuery('GET',
+        doAjaxQuery('POST',
           '/api/v1/books/' + bookId + '/order',
           { 'email': inputValue },
           function (res) {
@@ -199,7 +199,7 @@ var view = {
   },
   addMiniItemsSearch: function (pathUrl, books, text) {
     var content = $('#list');
-    content.html('<div id="miniItem"> </div><div id="no-cover"> </div>');
+    content.html('<div id="miniItem"> </div><div id="not_found"> </div>');
     var contentHTML = content.html();
     var limitImetsInSearch = 2;
     var n = 0;

@@ -1,7 +1,11 @@
 import auth from 'basic-auth';
 import { Request, Response, NextFunction } from 'express';
 
-const users: { [key: string]: { password: string } } = {
+type AuthUser = {
+  [key: string]: { password: string }
+};
+
+const users: AuthUser = {
   'admin': {
     password: process.env.ADMIN_PASS || 'admin'
   }

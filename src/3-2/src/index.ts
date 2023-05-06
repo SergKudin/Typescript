@@ -2,7 +2,7 @@ import express from "express";
 import http from "http";
 import morgan from 'morgan';
 import { preparedStart } from "./services/data.servise.js";
-import { adr, httpOptions, httpsOptions } from "./app.config.js";
+import { adr, httpOptions } from "./app.config.js";
 import { routes } from "./routes/routes.js";
 
 const app = express();

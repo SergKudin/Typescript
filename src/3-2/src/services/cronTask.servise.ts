@@ -2,10 +2,6 @@ import cron from 'node-cron';
 import { sql } from "./query.servise.js";
 import { dumpDatabase } from './mySqlDump.servise.js';
 
-async function runMysqlDump() {
-  console.log()
-}
-
 async function deleteBooks() {
   console.log(new Date() + 'start deleteBooks..');
   let booksForDel = await sql.getBooksForDel();
@@ -19,7 +15,6 @@ async function deleteBooks() {
   })
 }
 
-
 // cron config
 const cronBD = cron.schedule('0 1 * * *', async () => {  // '0 1 * * *'
   try {
@@ -29,13 +24,6 @@ const cronBD = cron.schedule('0 1 * * *', async () => {  // '0 1 * * *'
     console.error(error);
   }
 });  // - every day at 01:00
-
-const croneDelBooks = cron.schedule('0 * * * *', async () => {  // '0 * * * *'
-  try {
-  } catch (error) {
-    console.error(error);
-  }
-}); // - every hour at 00 min
 
 cronBD.on('error', (err: Error) => {
   console.error('Error with cron: ', err);

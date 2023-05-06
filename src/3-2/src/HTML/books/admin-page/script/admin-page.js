@@ -34,7 +34,7 @@ function delBook(id) {
     .then(inputValue => {
       if (inputValue) {
         console.log('for delaled ' + inputValue);
-        doAjaxQuery('GET', '/api/v1/admin/books/' + inputValue + '/remove', null, function (res) {
+        doAjaxQuery('POST', '/api/v1/admin/books/' + inputValue + '/remove', { id: inputValue }, function (res) {
           swal({
             title: 'Удалено!',
             text: 'Надеюсь, вы осознаете что сейчас произошло ))',

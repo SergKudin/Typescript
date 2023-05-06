@@ -58,7 +58,7 @@
                         });
                         $.ajax({
                           url: '/api/v1/admin/logout',
-                          type: 'GET',
+                          type: 'POST',
                           error: function(error) {
                             if (error.statusText === 'Unauthorized') {
                               window.location.href = '/';

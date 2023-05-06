@@ -39,7 +39,8 @@ type HtmlBook = {
 
 async function getSearchHtml(req: Request, res: Response) {
   try {
-    const search: string = req.query.search as string;
+    const search: string = ((req.query.search as string) || '').replace(/[^a-z0-9]/gi, '');
+    console.log(search)
     res.status(200).send(await getSearchCodeHtml(search));
   } catch (err) {
     res.status(404).send(JSON.stringify({ error: `${(err as Error).message}` }));
@@ -48,7 +49,8 @@ async function getSearchHtml(req: Request, res: Response) {
 
 async function getSearch(req: Request, res: Response) {
   try {
-    const search: string = req.query.search as string;
+    const search: string = ((req.query.search as string) || '').replace(/[^a-z0-9]/gi, '');
+    console.log(search)
     let result: HtmlBook[] = [];
     result = (await sql.searchBooks(search)).map(book => {
       return {
@@ -163,7 +165,6 @@ async function getAdminPaginationSet(req: Request, res: Response) {
 async function removeBook(req: Request, res: Response) {
   try {
     const id = req.params.id;
-    console.log('removeBook = ' + id)
 
     res.status(200).send(await sql.softDeleteBook(+id));
   } catch (err) {
